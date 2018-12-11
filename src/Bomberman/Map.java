@@ -1,43 +1,49 @@
 package Bomberman;
 
+import Bomberman.EntityManager.Entity;
+
 import java.awt.Point;
+import java.util.Arrays;
 import java.util.List;
 
 public class Map {
     static final int MAP_SIZE_X = 800; // Modify values if needed
-    static final int MAP_SIZE_Y = 600;
+    static final int MAP_SIZE_Y = 800;
 
-    static int HEIGHT_TILE;
-    static int WIDTH_TILE;
+    //contains all of the possible directions
+    private final List<Direction> directionList= Arrays.asList(Direction.NORTH,Direction.EAST,Direction.SOUTH,Direction.WEST);
 
-    enum Direction {
-        NORTH(0,1), SOUTH(0,-1), EAST(1,0), WEST(-1, 0);
-
-        protected Point direction;
-        Direction(int x, int y) {
-            this.direction = new Point(x, y);
-        }
-        public Point getDirection() {
-            return this.direction;
-        }
-    }
+    public static int HEIGHT_TILE;
+    public static int WIDTH_TILE;
 
     private Tile[][] map;
     private List<Entity> entitiesList;
-
-    public Map(Tile[][] map)
-    {
-        this.map = map;
-    }
 
     public void init()
     {
 
     }
 
-    public Boolean isMapGenerated()
+    public boolean isMapGenerated()
     {
-
+        return true;
     }
 
+    public Tile getTile(Point point)
+    {
+        return map[(int)point.getX()][(int)point.getY()];
+    }
+
+    public boolean isInsideMap(Point point)
+    {
+        return point.getX()>=0&&point.getY()>0 && point.getX()<WIDTH_TILE && point.getY()<HEIGHT_TILE;
+    }
+
+    public List<Direction> getDirectionList() {
+        return directionList;
+    }
+
+    public List<Entity> getEntitiesList() {
+        return entitiesList;
+    }
 }

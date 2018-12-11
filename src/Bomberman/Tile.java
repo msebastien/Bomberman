@@ -1,13 +1,12 @@
 package Bomberman;
 
+import Bomberman.EntityManager.Entity;
+
 public class Tile {
     private Entity entity;
-    private tileType type;
-    private Boolean free;
+    private TileType type;
 
-    public enum tileType{
-        OBSTACLE, GRASS;
-    }
+
 
     public Tile() // Constructor
     {
@@ -24,16 +23,16 @@ public class Tile {
         this.entity = entity;
     }
 
-    public tileType getTileType()
+    public TileType getTileType()
     {
         return type;
     }
 
-    public void setType(tileType type) {
+    public void setType(TileType type) {
         this.type = type;
     }
 
     public Boolean isFree(){
-        return free;
+        return type==TileType.GRASS && entity==null;
     }
 }
