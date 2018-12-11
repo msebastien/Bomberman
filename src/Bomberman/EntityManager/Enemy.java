@@ -33,7 +33,7 @@ public class Enemy extends MovingEntity
         }
 
         if(listPossibleExit.size()>0)
-            directionMovement= Randomator.getElementAleaIn(listPossibleExit).getDirection();
+            directionMovement= Randomator.getRandomElementIn(listPossibleExit).getDirection();
         else
             //like that the entity will not move next time and wait for an exit
             directionMovement=Direction.IDLE.getDirection();
