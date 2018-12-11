@@ -22,12 +22,12 @@ public class Map {
         }
     }
 
-    Tile[][] map;
-    List<Entity> entitiesList;
+    private Tile[][] map;
+    private List<Entity> entitiesList;
 
-    public Map()
+    public Map(Tile[][] map)
     {
-
+        this.map = map;
     }
 
     public void init()
