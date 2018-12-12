@@ -8,9 +8,9 @@ public class Tile {
 
 
 
-    public Tile() // Constructor
+    public Tile(TileType type) // Constructor
     {
-
+        this.type=type;
     }
 
     public Entity getEntity()

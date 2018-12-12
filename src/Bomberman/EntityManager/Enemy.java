@@ -9,10 +9,17 @@ import java.awt.Point;
 import java.util.LinkedList;
 import java.util.List;
 
+
 public class Enemy extends MovingEntity
 {
+
+    public Enemy(Point posInArrayMap, int moveDurationMs) {
+        super(posInArrayMap, moveDurationMs);
+    }
+
+    //TODO
     @Override
-    public boolean collisionWith(Entity entity) {
+    public boolean collisionWith(Point caseCollision) {
         return true;
     }
 
@@ -21,14 +28,14 @@ public class Enemy extends MovingEntity
         List<Direction> listPossibleExit=new LinkedList<>();
 
         Point testPoint=new Point();
-        for(int i=0;i< Game.map.getDirectionList().size();i++)
+        for(int i=0;i< Direction.directionList.size();i++)
         {
-            testPoint.setLocation(Game.map.getDirectionList().get(i).getDirection());
-            testPoint.translate((int)posInArrayMap.getX(),(int)posInArrayMap.getY());
+            testPoint.setLocation(Direction.directionList.get(i).getDirection());
+            testPoint.translate(posInArrayMap.x,posInArrayMap.y);
 
             if(Game.map.isInsideMap(testPoint) && Game.map.getTile(testPoint).isFree())
             {
-                listPossibleExit.add(Game.map.getDirectionList().get(i));
+                listPossibleExit.add(Direction.directionList.get(i));
             }
         }
 

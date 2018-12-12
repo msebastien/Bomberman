@@ -1,7 +1,9 @@
 package Bomberman.EntityManager;
 
+import Bomberman.Direction;
 import Bomberman.Game;
 import Bomberman.Map;
+import Bomberman.Randomator;
 
 import java.awt.Point;
 
@@ -10,15 +12,24 @@ public abstract class MovingEntity extends Bomberman.EntityManager.Entity
     protected Point directionMovement;
     protected Point constPixelMovement;
 
+    public MovingEntity(Point posInArrayMap, int moveDurationMs) {
+        super(posInArrayMap);
+        directionMovement= Randomator.getRandomElementIn(Direction.directionList).getDirection();
+
+        constPixelMovement=new Point(Map.WIDTH_TILE/(moveDurationMs/Game.THREAD_SLEEP),
+                Map.HEIGHT_TILE/(moveDurationMs/Game.THREAD_SLEEP));
+
+    }
+
     //indicate and solve if there is a collision with an other entity
-    public abstract boolean collisionWith(Bomberman.EntityManager.Entity entity);
+    public abstract boolean collisionWith(Point caseCollision);
 
     //update the coordinate in pixel of the entity after a move
     public void translatePixelEntity()
     {
         Point transitional=new Point(directionMovement);
         transitional.setLocation(transitional.getX()* constPixelMovement.getX(),transitional.getY()* constPixelMovement.getY());
-        posInPixelMap.translate((int)transitional.getX(),(int)transitional.getY());
+        posInPixelMap.translate(transitional.x,transitional.y);
     }
 
     public boolean isMoveBegin()
@@ -37,7 +48,7 @@ public abstract class MovingEntity extends Bomberman.EntityManager.Entity
             //we have to check his future Tile
             Point futureTile=new Point(posInArrayMap);
             //we set his future tile
-            futureTile.translate((int)directionMovement.getX(),(int)directionMovement.getY());
+            futureTile.translate(directionMovement.x,directionMovement.y);
 
             //if it's not inside map OR it's not free
             if( !Game.map.isInsideMap(futureTile) || !Game.map.getTile(futureTile).isFree())
@@ -45,7 +56,7 @@ public abstract class MovingEntity extends Bomberman.EntityManager.Entity
                 changeDirection();
 
                 futureTile.setLocation(posInArrayMap);
-                futureTile.translate((int)directionMovement.getX(),(int)directionMovement.getY());
+                futureTile.translate(directionMovement.x,directionMovement.y);
             }
 
             Game.map.getTile(futureTile).setEntity(this);
