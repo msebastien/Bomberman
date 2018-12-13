@@ -4,6 +4,10 @@ public class Main {
 
     public static void main(String[] args)
     {
-       Game game=new Game();
+
+        Scene scene=new Scene();
+        Window window=new Window(scene);
+        Game game=new Game(scene);
+
     }
 }

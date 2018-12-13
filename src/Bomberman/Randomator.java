@@ -15,4 +15,13 @@ public class Randomator {
     {
         return list.get(rand(0,list.size()));
     }
+
+    /**
+     * @param proba a number in [0,100[
+     * @return true with proba% of chance
+     */
+    public static boolean probaOfSuccess(int proba)
+    {
+        return rand(0,100+1)<=proba;
+    }
 }

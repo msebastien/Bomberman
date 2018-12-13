@@ -45,6 +45,8 @@ public abstract class MovingEntity extends Bomberman.EntityManager.Entity
         if(isMoveBegin())
         {
 
+            posInPixelMap.setLocation(posInArrayMap.x*Map.WIDTH_TILE,posInArrayMap.y*Map.HEIGHT_TILE);
+
             //we have to check his future Tile
             Point futureTile=new Point(posInArrayMap);
             //we set his future tile
@@ -59,8 +61,8 @@ public abstract class MovingEntity extends Bomberman.EntityManager.Entity
                 futureTile.translate(directionMovement.x,directionMovement.y);
             }
 
-            Game.map.getTile(futureTile).setEntity(this);
             Game.map.getTile(posInArrayMap).setEntity(null);
+            Game.map.getTile(futureTile).setEntity(this);
             posInArrayMap.setLocation(futureTile);
         }
 

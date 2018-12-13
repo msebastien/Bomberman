@@ -16,4 +16,8 @@ public abstract class Entity {
     }
 
     public abstract void action();
+
+    public Point getPosInPixelMap() {
+        return posInPixelMap;
+    }
 }
