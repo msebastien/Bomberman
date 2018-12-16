@@ -2,6 +2,8 @@ package Bomberman;
 
 import Bomberman.EntityManager.Enemy;
 import Bomberman.EntityManager.Entity;
+import Bomberman.EntityManager.Exit;
+import Bomberman.EntityManager.Player;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -26,6 +28,7 @@ public class Map {
         map =new Tile[MAP_SIZE_X][MAP_SIZE_Y];
         entitiesList=new ArrayList<>(0);
     }
+
 
     public void init(Scene scene)
     {
@@ -55,29 +58,65 @@ public class Map {
             {
                 if(map[i][j]==null)map[i][j]=new Tile(TileType.OBSTACLE);
                 else if(map[i][j].isFree())listOfFreeTile.add(new Point(i,j));
-                //in same time we register all the free tile, in order to generate the entity location
+                //in same time we register all the free tile, in order to generate the enemy location
             }
         }
 
 
-        //now we generate the entity
+        //now we generate the enemy
         int i=0;
         Point tileCoord;
+
+        //insert enemy
         Enemy enemy;
         while(i<NBR_ENTITY && !listOfFreeTile.isEmpty())
         {
-            tileCoord=Randomator.getRandomElementIn(listOfFreeTile);
-            enemy=new Enemy(tileCoord,1000);
-
-            map[tileCoord.x][tileCoord.y].setEntity(enemy);
-            entitiesList.add(enemy);
-
-            listOfFreeTile.remove(tileCoord);
+            enemy=new Enemy(1000);
+            insertEntityInMap(enemy,listOfFreeTile);
             i++;
         }
 
+        //insert player
+        Player player=new Player(1000);
+        insertEntityInMap(player,listOfFreeTile);
+
+        //insert exit
+        Exit exit=new Exit();
+        insertEntityInMap(exit,listOfFreeTile);
+
+        //on ajoute le player
+        /*if(!listOfFreeTile.isEmpty())
+        {
+            tileCoord=Randomator.getRandomElementIn(listOfFreeTile);
+            player.init(tileCoord,1000);
+            map[tileCoord.x][tileCoord.y].setEntity(player);
+            entitiesList.add(player);
+
+            //useful for the implementation of keylistener
+        }*/
+
+
+        scene.setFocusable(true);
+        scene.requestFocus();
+        scene.addKeyListener(player);
+
 
         isMapGenerated=true;
+    }
+
+    private void insertEntityInMap(Entity entity,List<Point> listOfFreeTile)
+    {
+
+        if(!listOfFreeTile.isEmpty())
+        {
+            Point tileCoord=Randomator.getRandomElementIn(listOfFreeTile);
+
+            map[tileCoord.x][tileCoord.y].setEntity(entity);
+            entitiesList.add(entity);
+            entity.init(tileCoord);
+
+            listOfFreeTile.remove(tileCoord);
+        }
     }
 
     private void generateMap(Point positionTileToGenerate,TileType typeOfTile)
@@ -98,7 +137,7 @@ public class Map {
                 futureTile.setLocation(positionTileToGenerate);
                 futureTile.translate(direction.getDirection().x,direction.getDirection().y);
 
-                TileType futureType=Randomator.probaOfSuccess(70)?TileType.GRASS:TileType.OBSTACLE;
+                TileType futureType=Randomator.probaOfSuccess(75)?TileType.GRASS:TileType.OBSTACLE;
 
                 if(isInsideMap(futureTile) && getTile(futureTile)==null)
                 {
