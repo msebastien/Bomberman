@@ -11,6 +11,14 @@ public abstract class Entity {
 
     public Entity(Point posInArrayMap)
     {
+        init(posInArrayMap);
+    }
+
+    //just used to create a player without parameter
+    public Entity() {}
+
+    public void init(Point posInArrayMap)
+    {
         this.posInArrayMap=new Point(posInArrayMap);
         this.posInPixelMap=new Point(posInArrayMap.x* Map.WIDTH_TILE,posInArrayMap.y*Map.HEIGHT_TILE);
     }

@@ -2,8 +2,10 @@ package Bomberman;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-public class Window extends JFrame {
+public class Window extends JFrame  {
 
     public Window(JPanel pan) throws HeadlessException {
         this.setTitle("Bomberman");
@@ -15,4 +17,6 @@ public class Window extends JFrame {
 
         this.setContentPane(pan);
     }
+
+
 }
