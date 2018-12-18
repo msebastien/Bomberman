@@ -9,6 +9,8 @@ public abstract class Entity {
     protected Point posInArrayMap;
     protected Point posInPixelMap;
 
+
+
     public Entity(Point posInArrayMap)
     {
         init(posInArrayMap);
@@ -34,5 +36,9 @@ public abstract class Entity {
 
     public Point getPosInPixelMap() {
         return posInPixelMap;
+    }
+
+    public Point getPosInArrayMap() {
+        return posInArrayMap;
     }
 }

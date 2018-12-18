@@ -6,7 +6,7 @@ import Bomberman.EntityManager.Entity;
 public class Game {
 
     private Map map;
-    public final static int THREAD_SLEEP=20;//in ms
+    public final static int THREAD_SLEEP=100;//in ms
 
     private Scene scene;
 
@@ -20,6 +20,7 @@ public class Game {
 
 
         Thread thread=new Thread(new GameThread());
+
         map.init(scene);
 
         //map.afficher();
@@ -56,9 +57,6 @@ public class Game {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
-
-
             }
         }
     }

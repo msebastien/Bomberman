@@ -12,8 +12,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Map {
-    static final int MAP_SIZE_X = 10; // Modify values if needed
-    static final int MAP_SIZE_Y = 10;
+    static final int MAP_SIZE_X = 20; // Modify values if needed
+    static final int MAP_SIZE_Y = 20;
 
     public static int HEIGHT_TILE;
     public static int WIDTH_TILE;
@@ -22,7 +22,7 @@ public class Map {
     private List<Entity> entitiesList;
     private boolean isMapGenerated=false;
 
-    private final int NBR_ENTITY=5;
+    private final int NBR_ENTITY=10;
 
     public Map() {
         map =new Tile[MAP_SIZE_X][MAP_SIZE_Y];
@@ -34,6 +34,9 @@ public class Map {
     {
         WIDTH_TILE=scene.getWidth()/MAP_SIZE_X;
         HEIGHT_TILE=scene.getHeight()/MAP_SIZE_Y;
+        if(WIDTH_TILE<HEIGHT_TILE) HEIGHT_TILE=WIDTH_TILE;
+        else WIDTH_TILE=HEIGHT_TILE;
+
         isMapGenerated=false;
 
         //on initialise a null notre map

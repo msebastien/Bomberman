@@ -9,6 +9,8 @@ public abstract class MovingEntity extends Bomberman.EntityManager.Entity
     protected Point directionMovement;
     protected Point constPixelMovement;
 
+    protected Point oldPosInArrayMap;
+
     /*public MovingEntity(Point posInArrayMap, int moveDurationMs) {
         //super(posInArrayMap);
 
@@ -73,7 +75,6 @@ public abstract class MovingEntity extends Bomberman.EntityManager.Entity
     public void action() {
         if(isMoveBegin())
         {
-
             posInPixelMap.setLocation(posInArrayMap.x* Map.WIDTH_TILE,posInArrayMap.y*Map.HEIGHT_TILE);
 
             //we have to check his future Tile
@@ -100,11 +101,23 @@ public abstract class MovingEntity extends Bomberman.EntityManager.Entity
             Main.game.getMap().getTile(posInArrayMap).setEntity(null);
             Main.game.getMap().getTile(futureTile).setEntity(this);
 
+            //we save our old position
+            oldPosInArrayMap.setLocation(posInArrayMap);
             posInArrayMap.setLocation(futureTile);
         }
 
         //he translates himself forward with his direction
         translatePixelEntity();
+    }
+
+    @Override
+    public void init(Point posInArrayMap) {
+        super.init(posInArrayMap);
+        this.oldPosInArrayMap=new Point(posInArrayMap);
+    }
+
+    public Point getOldPosInArrayMap() {
+        return oldPosInArrayMap;
     }
 
     public abstract void changeDirection();
