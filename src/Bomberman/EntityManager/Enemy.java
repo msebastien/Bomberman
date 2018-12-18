@@ -11,10 +11,7 @@ import java.util.List;
 public class Enemy extends MovingEntity
 {
 
-    /*public Enemy(Point posInArrayMap, int moveDurationMs) {
-        super(posInArrayMap, moveDurationMs);
-        directionMovement= Randomator.getRandomElementIn(Direction.directionList).getDirection();
-    }*/
+
 
     public Enemy(int moveDuration) {
         super(moveDuration);
@@ -22,19 +19,18 @@ public class Enemy extends MovingEntity
     }
 
 
-
-    /*public void init(Point posInArrayMap, int moveDurationMs)
-    {
-        super.init(posInArrayMap,moveDurationMs);
-        directionMovement= Randomator.getRandomElementIn(Direction.directionList).getDirection();
-    }*/
-
-
     @Override
-    public boolean collisionWith(Point caseCollision) {
-        return true;
-    }
+    public void actionOnCollision(Entity entity) {
 
+        //if we enter in a player
+        if(entity.getClass()==Player.class)
+        {
+            //this is the end of the game
+            Main.game.end("Defaite");
+        }
+
+    }
+/*
     @Override
     public void action() {
 
@@ -67,7 +63,7 @@ public class Enemy extends MovingEntity
         //he translates himself forward with his direction
         translatePixelEntity();
     }
-
+*/
 
     public void changeDirection() {
         List<Direction> listPossibleExit=new LinkedList<>();

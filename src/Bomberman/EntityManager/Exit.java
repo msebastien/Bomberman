@@ -1,21 +1,21 @@
 package Bomberman.EntityManager;
 
-import Bomberman.Map;
 
-import java.awt.*;
+import Bomberman.Main;
 
 public class Exit extends Entity {
 
 
-    /*public Exit(Point posInArrayMap) {
-        super(posInArrayMap);
-    }*/
+    @Override
+    public void actionOnCollision(Entity entity) {
 
-    /*public void init(Point posInArrayMap)
-    {
-        this.posInArrayMap=new Point(posInArrayMap);
-        this.posInPixelMap=new Point(posInArrayMap.x* Map.WIDTH_TILE,posInArrayMap.y*Map.HEIGHT_TILE);
-    }*/
+        if(entity.getClass()==Player.class)
+        {
+            Main.game.end("Victoire");
+        }
+
+        //we don't care because this is not a movingentity ,so we never save this returned value
+    }
 
     @Override
     //TODO Don't know what to do with the exit each turn , maybe increment something to decrement the point or maybe the

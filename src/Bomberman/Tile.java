@@ -35,4 +35,8 @@ public class Tile {
     public Boolean isFree(){
         return type==TileType.GRASS && entity==null;
     }
+
+    public boolean hasItem(){
+        return entity!=null;
+    }
 }

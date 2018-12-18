@@ -21,20 +21,24 @@ public class Player extends MovingEntity implements KeyListener
         futureDirection=Direction.IDLE.getDirection();
     }
 
-    /*public Player(Point posInArrayMap, int moveDurationMs) {
-        init(posInArrayMap,moveDurationMs);
-    }*/
 
-    /*public void init(Point posInArrayMap, int moveDurationMs)
-    {
-        super.init(posInArrayMap,moveDurationMs);
+    @Override
+    public boolean isMoveBegin() {
+        boolean res= super.isMoveBegin();
+        if(res)
+        {
+            directionMovement=futureDirection;
+        }
+        return res ;
+    }
+
+    @Override
+    public void changeDirection() {
         directionMovement= Direction.IDLE.getDirection();
-        futureDirection=Direction.IDLE.getDirection();
-    }*/
-
+    }
 
     //I think this method is too similar to the method in Enemy maybe we can do something to concatenate the both
-    @Override
+    /*@Override
     public void action() {
 
         if(isMoveBegin())
@@ -63,13 +67,12 @@ public class Player extends MovingEntity implements KeyListener
 
         //he translates himself forward with his direction
         translatePixelEntity();
-    }
+    }*/
 
-    //TODO
+
     @Override
-    public boolean collisionWith(Point caseCollision) {
+    public void actionOnCollision(Entity entity) {
 
-        return true;
     }
 
     @Override
