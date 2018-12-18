@@ -1,14 +1,12 @@
 package Bomberman;
 
 import Bomberman.EntityManager.Entity;
-import Bomberman.EntityManager.Player;
 
-import java.awt.*;
 
 public class Game {
 
     private Map map;
-    public final static int THREAD_SLEEP=100;//in ms
+    public final static int THREAD_SLEEP=20;//in ms
 
     private Scene scene;
 

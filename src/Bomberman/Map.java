@@ -65,7 +65,6 @@ public class Map {
 
         //now we generate the enemy
         int i=0;
-        Point tileCoord;
 
         //insert enemy
         Enemy enemy;
@@ -137,7 +136,7 @@ public class Map {
                 futureTile.setLocation(positionTileToGenerate);
                 futureTile.translate(direction.getDirection().x,direction.getDirection().y);
 
-                TileType futureType=Randomator.probaOfSuccess(75)?TileType.GRASS:TileType.OBSTACLE;
+                TileType futureType=Randomator.probaOfSuccess(80)?TileType.GRASS:TileType.OBSTACLE;
 
                 if(isInsideMap(futureTile) && getTile(futureTile)==null)
                 {

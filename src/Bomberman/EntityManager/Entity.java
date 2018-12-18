@@ -25,6 +25,13 @@ public abstract class Entity {
 
     public abstract void action();
 
+    /**
+     * Something to do when you enter in an other entity
+     * What to do to the other entity
+     * @param entity
+     */
+    protected abstract void actionOnCollision(Entity entity);
+
     public Point getPosInPixelMap() {
         return posInPixelMap;
     }
