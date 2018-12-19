@@ -6,10 +6,7 @@ import Bomberman.EntityManager.Exit;
 import Bomberman.EntityManager.Player;
 
 import java.awt.Point;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class Map {
     static final int MAP_SIZE_X = 20; // Modify values if needed
@@ -19,14 +16,18 @@ public class Map {
     public static int WIDTH_TILE;
 
     private Tile[][] map;
-    private List<Entity> entitiesList;
-    private boolean isMapGenerated=false;
+    //contain all the current entities
+    private Vector<Entity> entitiesList;
 
-    private final int NBR_ENTITY=10;
+
+
+    private boolean isMapGenerated=false;
+    private final int PROBA_GENERATION_MAP=80;
+    private final int NBR_ENTITY=8;
 
     public Map() {
         map =new Tile[MAP_SIZE_X][MAP_SIZE_Y];
-        entitiesList=new ArrayList<>(0);
+        entitiesList=new Vector<>(0);
     }
 
 
@@ -86,18 +87,6 @@ public class Map {
         Exit exit=new Exit();
         insertEntityInMap(exit,listOfFreeTile);
 
-        //on ajoute le player
-        /*if(!listOfFreeTile.isEmpty())
-        {
-            tileCoord=Randomator.getRandomElementIn(listOfFreeTile);
-            player.init(tileCoord,1000);
-            map[tileCoord.x][tileCoord.y].setEntity(player);
-            entitiesList.add(player);
-
-            //useful for the implementation of keylistener
-        }*/
-
-
         scene.setFocusable(true);
         scene.requestFocus();
         scene.addKeyListener(player);
@@ -139,7 +128,7 @@ public class Map {
                 futureTile.setLocation(positionTileToGenerate);
                 futureTile.translate(direction.getDirection().x,direction.getDirection().y);
 
-                TileType futureType=Randomator.probaOfSuccess(80)?TileType.GRASS:TileType.OBSTACLE;
+                TileType futureType=Randomator.probaOfSuccess(PROBA_GENERATION_MAP)?TileType.GRASS:TileType.OBSTACLE;
 
                 if(isInsideMap(futureTile) && getTile(futureTile)==null)
                 {
@@ -169,15 +158,22 @@ public class Map {
         return point.x>=0&&point.y>=0 && point.x<MAP_SIZE_X && point.y<MAP_SIZE_Y;
     }
 
-    public List<Entity> getEntitiesList() {
+    public boolean isInsideMap(int x,int y)
+    {
+        return x>=0&&y>=0 && x<MAP_SIZE_X && y<MAP_SIZE_Y;
+    }
+
+    public synchronized List<Entity> getEntitiesList() {
         return entitiesList;
     }
 
+
+
     public void afficher()
     {
-        for (int i=0;i<map.length;i++)
+        for(int j=0;j<map[0].length;j++)
         {
-            for(int j=0;j<map[i].length;j++)
+            for (int i=0;i<map.length;i++)
             {
 
                 if(map[i][j]!=null)
@@ -191,4 +187,19 @@ public class Map {
 
         }
     }
+
+    public void deleteDeadEntities()
+    {
+        Iterator iter=getEntitiesList().iterator();
+        Entity entity=null;
+        while(iter.hasNext())
+            entity= (Entity) iter.next();
+            if(entity!=null&&!entity.isAlive())
+            {
+                //getTile(entity.getPosInArrayMap()).setEntity(null);
+                iter.remove();
+            }
+    }
+
+
 }

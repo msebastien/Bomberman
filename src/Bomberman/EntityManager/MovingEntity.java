@@ -15,7 +15,6 @@ public abstract class MovingEntity extends Bomberman.EntityManager.Entity
         //super(posInArrayMap);
 
         init(posInArrayMap,moveDurationMs);
-
     }*/
 
     //just used to a create a player without parameter

@@ -1,22 +1,22 @@
 package Bomberman.EntityManager;
 
-import Bomberman.Direction;
-import Bomberman.Game;
-import Bomberman.Main;
-import Bomberman.Map;
+import Bomberman.*;
 
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Player extends MovingEntity implements KeyListener
 {
 
     //contain the future direction (chose with a key pressed)
     private Point futureDirection;
+    private AtomicBoolean isThrowingBomb;
 
     public Player(int moveDuration){
         super(moveDuration);
+        isThrowingBomb=new AtomicBoolean(false);
         directionMovement= Direction.IDLE.getDirection();
         futureDirection=Direction.IDLE.getDirection();
     }
@@ -31,6 +31,7 @@ public class Player extends MovingEntity implements KeyListener
         }
         return res ;
     }
+
 
     @Override
     public void changeDirection() {
@@ -70,21 +71,54 @@ public class Player extends MovingEntity implements KeyListener
     }*/
 
 
+
+
+    private void placeBomb()
+    {
+        if(Main.game!=null )
+        {
+            Tile tile=Main.game.getMap().getTile(oldPosInArrayMap);
+            if(!tile.hasItem())
+            {
+                Bomb bomb=new Bomb(oldPosInArrayMap);
+                tile.setEntity(bomb);
+                Main.game.getMap().getEntitiesList().add(bomb);
+            }
+
+        }
+    }
+
+    @Override
+    public void action() {
+        super.action();
+        if(isThrowingBomb.get())
+        {
+            isThrowingBomb.set(false);
+            placeBomb();
+        }
+    }
+
     @Override
     public void actionOnCollision(Entity entity) {
 
     }
 
+
+
     @Override
     public void keyTyped(KeyEvent keyEvent) {
+
     }
 
-    //TODO
     @Override
     public void keyPressed(KeyEvent keyEvent) {
 
         switch (keyEvent.getKeyCode())
         {
+            case KeyEvent.VK_SPACE:
+                isThrowingBomb.set(true);
+                //placeBomb();
+                break;
             case KeyEvent.VK_LEFT:
                 futureDirection=Direction.WEST.getDirection();
                 break;

@@ -9,7 +9,8 @@ public abstract class Entity {
     protected Point posInArrayMap;
     protected Point posInPixelMap;
 
-
+    //check if we can delete the entity from the entity list
+    protected boolean isAlive;
 
     public Entity(Point posInArrayMap)
     {
@@ -21,8 +22,17 @@ public abstract class Entity {
 
     public void init(Point posInArrayMap)
     {
+        isAlive=true;
         this.posInArrayMap=new Point(posInArrayMap);
         this.posInPixelMap=new Point(posInArrayMap.x* Map.WIDTH_TILE,posInArrayMap.y*Map.HEIGHT_TILE);
+    }
+
+    public boolean isAlive() {
+        return isAlive;
+    }
+
+    public void destroy() {
+        isAlive = false;
     }
 
     public abstract void action();
