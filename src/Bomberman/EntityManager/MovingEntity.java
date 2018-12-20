@@ -87,8 +87,7 @@ public abstract class MovingEntity extends Bomberman.EntityManager.Entity
             if( !Main.game.getMap().isInsideMap(futureTile)
                     || !Main.game.getMap().getTile(futureTile).isFree())
             {
-
-                if(Main.game.getMap().isInsideMap(futureTile)&&Main.game.getMap().getTile(futureTile).hasItem())
+                if(Main.game.getMap().isInsideMap(futureTile)&&Main.game.getMap().getTile(futureTile).hasEntity())
                     this.collisionWith(futureTile);
 
                 changeDirection();

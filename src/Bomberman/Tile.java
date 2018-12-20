@@ -36,7 +36,7 @@ public class Tile {
         return type==TileType.GRASS && entity==null;
     }
 
-    public boolean hasItem(){
+    public boolean hasEntity(){
         return entity!=null;
     }
 }

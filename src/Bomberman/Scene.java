@@ -1,9 +1,6 @@
 package Bomberman;
 
-import Bomberman.EntityManager.Bomb;
-import Bomberman.EntityManager.Enemy;
-import Bomberman.EntityManager.Exit;
-import Bomberman.EntityManager.MovingEntity;
+import Bomberman.EntityManager.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -50,8 +47,11 @@ public class Scene extends JPanel implements ComponentListener {
                 if(entity.isAlive()) {
 
                     if (entity.getClass() == Enemy.class) g.setColor(Color.RED);
-                    else if (entity.getClass() == Exit.class) g.setColor(Color.ORANGE);
+                    else if (entity.getClass() == Exit.class) g.setColor(Color.MAGENTA);
                     else if (entity.getClass() == Bomb.class) g.setColor(Color.CYAN);
+                    else if(entity.getClass()== Explosion.class) g.setColor(Color.ORANGE);
+                    else if(entity.getClass()== ItemDropped.class) g.setColor(Color.WHITE);
+
                     else g.setColor(Color.BLUE);
                     g.fillRect(entity.getPosInPixelMap().x, entity.getPosInPixelMap().y, Map.WIDTH_TILE, Map.HEIGHT_TILE);
                 }

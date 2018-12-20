@@ -1,12 +1,10 @@
 package Bomberman;
 
-import Bomberman.EntityManager.Enemy;
-import Bomberman.EntityManager.Entity;
-import Bomberman.EntityManager.Exit;
-import Bomberman.EntityManager.Player;
+import Bomberman.EntityManager.*;
 
 import java.awt.Point;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Map {
     static final int MAP_SIZE_X = 20; // Modify values if needed
@@ -23,7 +21,8 @@ public class Map {
 
     private boolean isMapGenerated=false;
     private final int PROBA_GENERATION_MAP=80;
-    private final int NBR_ENTITY=8;
+    private final int NBR_ENTITY=10;
+    private final int MIN_DISTANCE_FROM_PLAYER_SPAWN=5;
 
     public Map() {
         map =new Tile[MAP_SIZE_X][MAP_SIZE_Y];
@@ -66,6 +65,12 @@ public class Map {
             }
         }
 
+        //insert player
+        Player player=new Player(1000);
+        insertEntityInMap(player,listOfFreeTile);
+        //we filter the list to prevent from spawn near an enemy
+        listOfFreeTile=listOfFreeTile.stream().filter(elt->
+                elt.distance(player.getPosInArrayMap())>MIN_DISTANCE_FROM_PLAYER_SPAWN).collect(Collectors.toList());
 
         //now we generate the enemy
         int i=0;
@@ -79,9 +84,6 @@ public class Map {
             i++;
         }
 
-        //insert player
-        Player player=new Player(1000);
-        insertEntityInMap(player,listOfFreeTile);
 
         //insert exit
         Exit exit=new Exit();
@@ -168,6 +170,23 @@ public class Map {
     }
 
 
+    public void deleteFromMap(Entity entity)
+    {
+        if(entity!=null)
+        {
+            entity.destroy();
+            map[entity.getPosInArrayMap().x][entity.getPosInArrayMap().y].setEntity(null);
+        }
+    }
+
+    public void addToMap(Entity entity)
+    {
+        if(entity!=null)
+        {
+            entitiesList.add(entity);
+            map[entity.getPosInArrayMap().x][entity.getPosInArrayMap().y].setEntity(entity);
+        }
+    }
 
     public void afficher()
     {

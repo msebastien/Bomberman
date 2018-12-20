@@ -17,7 +17,7 @@ public abstract class Entity {
         init(posInArrayMap);
     }
 
-    //just used to create a player without parameter
+    //just used to call super frommoving entity
     public Entity() {}
 
     public void init(Point posInArrayMap)

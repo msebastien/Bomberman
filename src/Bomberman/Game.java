@@ -42,9 +42,7 @@ public class Game {
 
             while(true)
             {
-                /*map.afficher();
-                System.out.println("_____________");
-                */
+
                 if(isRunning)
                 {
                     //all of the entity do their action

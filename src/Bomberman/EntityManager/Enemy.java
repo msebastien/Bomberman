@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-public class Enemy extends MovingEntity
+public class Enemy extends MovingEntity implements ActionOnDisappearance
 {
 
 
@@ -30,40 +30,6 @@ public class Enemy extends MovingEntity
         }
 
     }
-/*
-    @Override
-    public void action() {
-
-        //if the ennemy is at the beginning of a tile
-        if(isMoveBegin())
-        {
-
-            posInPixelMap.setLocation(posInArrayMap.x* Map.WIDTH_TILE,posInArrayMap.y*Map.HEIGHT_TILE);
-
-            //we have to check his future Tile
-            Point futureTile=new Point(posInArrayMap);
-            //we set his future tile
-            futureTile.translate(directionMovement.x,directionMovement.y);
-
-            //if it's not inside map OR it's not free
-            if( !Main.game.getMap().isInsideMap(futureTile) || !Main.game.getMap().getTile(futureTile).isFree())
-            {
-                changeDirection();
-
-                futureTile.setLocation(posInArrayMap);
-                futureTile.translate(directionMovement.x,directionMovement.y);
-            }
-
-            Main.game.getMap().getTile(posInArrayMap).setEntity(null);
-            Main.game.getMap().getTile(futureTile).setEntity(this);
-
-            posInArrayMap.setLocation(futureTile);
-        }
-
-        //he translates himself forward with his direction
-        translatePixelEntity();
-    }
-*/
 
     public void changeDirection() {
         List<Direction> listPossibleExit=new LinkedList<>();
@@ -86,5 +52,10 @@ public class Enemy extends MovingEntity
             //like that the entity will not move next time and wait for an exit
             directionMovement=Direction.IDLE.getDirection();
 
+    }
+
+    @Override
+    public void actionOnDisappearance() {
+        Main.game.getMap().addToMap(new ItemDropped(new Point(this.posInArrayMap)));
     }
 }
