@@ -18,7 +18,6 @@ public class Game {
 
         this.scene=scene;
 
-
         Thread thread=new Thread(new GameThread());
         map.init(scene);
 

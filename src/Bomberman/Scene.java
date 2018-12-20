@@ -17,7 +17,6 @@ public class Scene extends JPanel {
         {
 
 
-
             //we watch each tile and print them
             for(int i=0;i<Map.MAP_SIZE_X;i++)
             {

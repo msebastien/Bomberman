@@ -1,5 +1,6 @@
 package Bomberman.EntityManager;
 
+import Bomberman.Container;
 import Bomberman.Map;
 
 import java.awt.Point;
@@ -8,10 +9,12 @@ public abstract class Entity {
 
     protected Point posInArrayMap;
     protected Point posInPixelMap;
+    Container container;
 
     public Entity(Point posInArrayMap)
     {
         init(posInArrayMap);
+        container = new Container();
     }
 
     //just used to create a player without parameter
