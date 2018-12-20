@@ -5,7 +5,7 @@ package Bomberman;
 public class Game {
 
     private Map map;
-    public final static int THREAD_SLEEP=100;//in ms
+    public final static int THREAD_SLEEP=15;//in ms
 
     private Scene scene;
 
