@@ -1,12 +1,11 @@
 package Bomberman;
 
-import Bomberman.EntityManager.Entity;
 
 
 public class Game {
 
     private Map map;
-    public final static int THREAD_SLEEP=20;//in ms
+    public final static int THREAD_SLEEP=100;//in ms
 
     private Scene scene;
 
@@ -19,9 +18,9 @@ public class Game {
         this.scene=scene;
 
         Thread thread=new Thread(new GameThread());
+
         map.init(scene);
 
-        //map.afficher();
         thread.start();
     }
 
@@ -42,22 +41,30 @@ public class Game {
 
             while(true)
             {
+
                 if(isRunning)
                 {
                     //all of the entity do their action
-                    map.getEntitiesList().forEach(Entity::action);
+                    //for loop necessary to go through concurrentModification
+                    for(int i=0;i<map.getEntitiesList().size();i++)
+                    {
+                        if(map.getEntitiesList().get(i).isAlive())
+                        {
+                            map.getEntitiesList().get(i).action();
+                        }
+                    }
+
                 }
 
                 scene.repaint();
+
+
 
                 try {
                     Thread.sleep(THREAD_SLEEP);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
-
-
             }
         }
     }
