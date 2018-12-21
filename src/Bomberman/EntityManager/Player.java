@@ -14,10 +14,12 @@ public class Player extends MovingEntity implements KeyListener
     private Point futureDirection;
     private AtomicBoolean isThrowingBomb;
     private int bombReserve;
+    private Point futurePosBomb;
 
     public Player(int moveDuration){
         super(moveDuration);
         bombReserve=15;
+        futurePosBomb=new Point();
         isThrowingBomb=new AtomicBoolean(false);
         directionMovement= Direction.IDLE.getDirection();
         futureDirection=Direction.IDLE.getDirection();
@@ -43,16 +45,19 @@ public class Player extends MovingEntity implements KeyListener
 
     private void placeBomb()
     {
-        if(Main.game!=null )
+        //the tile where we will put the bomb
+        Point directionExplosion=new Point(futurePosBomb);
+        directionExplosion.translate(posInArrayMap.x,posInArrayMap.y);
+
+        if(Main.game!=null && Main.game.getMap().isInsideMap(directionExplosion))
         {
-            Tile tile=Main.game.getMap().getTile(oldPosInArrayMap);
-            if(!tile.hasEntity())
+            Tile tile=Main.game.getMap().getTile(directionExplosion);
+            if(tile.isFree())
             {
-                Bomb bomb=new Bomb(oldPosInArrayMap,4000, Randomator.getRandomElementIn(Bomb.DifferentTypeExplosion));
+                Bomb bomb=new Bomb(directionExplosion,4000, Randomator.getRandomElementIn(Bomb.DifferentTypeExplosion));
                 tile.setEntity(bomb);
                 Main.game.getMap().getEntitiesList().add(bomb);
             }
-
         }
     }
 
@@ -89,10 +94,6 @@ public class Player extends MovingEntity implements KeyListener
 
         switch (keyEvent.getKeyCode())
         {
-            case KeyEvent.VK_SPACE:
-                isThrowingBomb.set(true);
-                //placeBomb();
-                break;
             case KeyEvent.VK_LEFT:
                 futureDirection=Direction.WEST.getDirection();
                 break;
@@ -104,6 +105,25 @@ public class Player extends MovingEntity implements KeyListener
                 break;
             case KeyEvent.VK_DOWN:
                 futureDirection=Direction.SOUTH.getDirection();
+                break;
+
+                //gestion bombe
+            case KeyEvent.VK_SPACE:
+                isThrowingBomb.set(true);
+                break;
+                //direction Bombe
+            case KeyEvent.VK_Q:
+                futurePosBomb=Direction.WEST.getDirection();
+                break;
+            case KeyEvent.VK_D:
+                futurePosBomb=Direction.EAST.getDirection();
+                break;
+            case KeyEvent.VK_Z:
+                futurePosBomb=Direction.NORTH.getDirection();
+                break;
+            case KeyEvent.VK_S:
+                futurePosBomb=Direction.SOUTH.getDirection();
+
         }
     }
 

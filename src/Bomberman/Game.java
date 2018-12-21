@@ -5,7 +5,7 @@ package Bomberman;
 public class Game {
 
     private Map map;
-    public final static int THREAD_SLEEP=100;//in ms
+    public final static int THREAD_SLEEP=50;//in ms
 
     private Scene scene;
 
@@ -49,10 +49,10 @@ public class Game {
                     //for loop necessary to go through concurrentModification
                     for(int i=0;i<map.getEntitiesList().size();i++)
                     {
-                        if(map.getEntitiesList().get(i).isAlive())
-                        {
+                        //if(map.getEntitiesList().get(i).isAlive())
+                        //{
                             map.getEntitiesList().get(i).action();
-                        }
+                        //}
                     }
 
                 }

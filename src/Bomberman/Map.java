@@ -20,8 +20,8 @@ public class Map {
 
 
     private boolean isMapGenerated=false;
-    private final int PROBA_GENERATION_MAP=80;
-    private final int NBR_ENTITY=10;
+    private final int PROBA_GENERATION_MAP=75;
+    private final int NBR_ENTITY=20;
     private final int MIN_DISTANCE_FROM_PLAYER_SPAWN=5;
 
     public Map() {
@@ -66,7 +66,7 @@ public class Map {
         }
 
         //insert player
-        Player player=new Player(1000);
+        Player player=new Player(800);
         insertEntityInMap(player,listOfFreeTile);
         //we filter the list to prevent from spawn near an enemy
         listOfFreeTile=listOfFreeTile.stream().filter(elt->
@@ -174,7 +174,8 @@ public class Map {
     {
         if(entity!=null)
         {
-            entity.destroy();
+            //entity.destroy();
+            entitiesList.remove(entity);
             map[entity.getPosInArrayMap().x][entity.getPosInArrayMap().y].setEntity(null);
         }
     }
@@ -206,19 +207,4 @@ public class Map {
 
         }
     }
-
-    public void deleteDeadEntities()
-    {
-        Iterator iter=getEntitiesList().iterator();
-        Entity entity=null;
-        while(iter.hasNext())
-            entity= (Entity) iter.next();
-            if(entity!=null&&!entity.isAlive())
-            {
-                //getTile(entity.getPosInArrayMap()).setEntity(null);
-                iter.remove();
-            }
-    }
-
-
 }

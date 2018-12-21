@@ -7,10 +7,9 @@ import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
-public class Scene extends JPanel implements ComponentListener {
+public class Scene extends JPanel  {
 
     private String stringEndGame;
-    private boolean isFirstPrint=true;
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -19,13 +18,11 @@ public class Scene extends JPanel implements ComponentListener {
         if(Main.game!=null && Main.game.getMap()!=null && Main.game.getMap().isMapGenerated())
         {
             //if we are on the first print, we have to print all the map first
-            if(isFirstPrint)
-            {
-                printAllMap(g);
-                isFirstPrint=false;
-            }
 
-            //now we print all the backgrounf of the current entities in the map
+            printAllMap(g);
+
+
+            /*//now we print all the backgrounf of the current entities in the map
             Main.game.getMap().getEntitiesList().forEach(entity-> {
 
                 //we paint the background of used tile
@@ -37,14 +34,14 @@ public class Scene extends JPanel implements ComponentListener {
 
                 paintTile(g,entity.getPosInArrayMap());
 
-            });
+            });*/
 
             Main.game.getMap().getEntitiesList().forEach(entity-> {
                 //we paint the entity itself
 
                 //if the entity is dead , we can't paint it because we want to hide it one last time with the previous
                 //operation when we printed the background
-                if(entity.isAlive()) {
+                //if(entity.isAlive()) {
 
                     if (entity.getClass() == Enemy.class) g.setColor(Color.RED);
                     else if (entity.getClass() == Exit.class) g.setColor(Color.MAGENTA);
@@ -54,12 +51,12 @@ public class Scene extends JPanel implements ComponentListener {
 
                     else g.setColor(Color.BLUE);
                     g.fillRect(entity.getPosInPixelMap().x, entity.getPosInPixelMap().y, Map.WIDTH_TILE, Map.HEIGHT_TILE);
-                }
+                //}
 
             });
 
             //now we painted one last time the dead entities we can delete them
-            Main.game.getMap().deleteDeadEntities();
+            //Main.game.getMap().deleteDeadEntities();
 
             if(stringEndGame!=null)
             {
@@ -109,23 +106,5 @@ public class Scene extends JPanel implements ComponentListener {
         g.fillRect(tileToPaint.x*Map.WIDTH_TILE,tileToPaint.y*Map.HEIGHT_TILE,Map.WIDTH_TILE,Map.HEIGHT_TILE);
     }
 
-    @Override
-    public void componentResized(ComponentEvent e) {
 
-    }
-
-    @Override
-    public void componentMoved(ComponentEvent e) {
-        isFirstPrint=true;
-    }
-
-    @Override
-    public void componentShown(ComponentEvent e) {
-
-    }
-
-    @Override
-    public void componentHidden(ComponentEvent e) {
-
-    }
 }
