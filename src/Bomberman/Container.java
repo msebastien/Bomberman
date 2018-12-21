@@ -32,7 +32,7 @@ public class Container {
     private int timeToNextImage; // Number of ms to go the next image
     private long lastAnimationTime;
     private BufferedImage animation[];
-    boolean init = false;
+    boolean continueAnim = false;
     private int index;
 
 
@@ -60,15 +60,15 @@ public class Container {
     {
         long now = now().toEpochMilli();
 
-        if(index >= animation.length-1){
+        if(index >= animation.length-1){ // Checks if we reach the end of the array/animation
             index = 0;
-            init = false;
+            continueAnim = false;
         }
-        else if(now-lastAnimationTime >=  (long)timeToNextImage && init){
+        else if(now-lastAnimationTime >=  (long)timeToNextImage && continueAnim){ // Increment index every specific period of time
             index++;
             lastAnimationTime = now().toEpochMilli();
-        }else if(index == 0){
-            init = true;
+        }else if(index == 0){ // Checks if we are at the beginning of the animation
+            continueAnim = true;
         }
 
         return animation[index];
