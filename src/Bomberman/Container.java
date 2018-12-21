@@ -54,7 +54,7 @@ public class Container {
     // Get the next image of the animation
     public BufferedImage getNextImage()
     {
-        if(now().toEpochMilli() >  (long)timeToNextImage){
+        if(now().toEpochMilli() >=  (long)timeToNextImage){
             if(index < animation.length-1) index++;
         }
 
