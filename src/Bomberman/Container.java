@@ -1,52 +1,50 @@
 package Bomberman;
 
-import java.util.List;
+import Bomberman.EntityManager.Player;
+
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 import java.awt.image.BufferedImage;
+import static java.util.Map.entry;
 
 public class Container {
-    static Map<Animation, List<BufferedImage>> entityAnimations;
-    private List<BufferedImage> tileImages;
+    static Map<Animation, BufferedImage[]> globalEntityAnimations;
+
+    static {
+        try {
+            globalEntityAnimations = (Map<Animation, BufferedImage[]>) Map.ofEntries(
+                    entry(Animation.PLAYER_IDLE, new BufferedImage[]{
+                            ImageIO.read( new File("resources/player/Player_Idle_000.png") ) }),
+                    entry(Animation.PLAYER_MOVE_LEFT, new BufferedImage[]{
+                            ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_000.png") ) })
+            );
+        }catch(IOException e){
+
+        }
+    }
+
+    private BufferedImage animation[];
     private int index;
 
 
-    public Container() {
-        this.tileImages = tileImages;
-        this.index = 0;
+    public Container(Animation animType){
+        setAnimation(animType);
     }
 
-    // Tiles
-    public List<BufferedImage> getTileImages() {
-        return tileImages;
+    // Select the animation to apply to the entity's container
+    public void setAnimation(Animation animType){
+        index = -1;
+        animation = globalEntityAnimations.get(animType).clone();
     }
 
-    public void setTileImages(List<BufferedImage> tileImages) {
-        this.tileImages = tileImages;
-    }
-
-
-    // Animations
-    public BufferedImage getNextImage(Animation animationType)
+    // Get the next image of the animation
+    public BufferedImage getNextImage()
     {
-        index++;
-        return entityAnimations.get(animationType).get(index);
+        if(index < animation.length-1) index++;
+        return animation[index];
     }
-
-    // Set 1 animation
-    public void setAnimation(Animation animationType, List<BufferedImage> animation){
-        for(int i=0; i<animation.size(); i++){
-            entityAnimations.get(animationType).add(animation.get(i));
-        }
-    }
-
-    /*public void setAnimations(List<Animation> animationTypes, List<BufferedImage> animation){
-        for(int i=0; i<animation.size(); i++){
-            entityAnimations.get(animationTypes.get(i)).set(i, animation.get(i));
-        }
-    }*/
-
-
-
 
 
 }

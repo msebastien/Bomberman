@@ -25,7 +25,7 @@ public class Scene extends JPanel implements ComponentListener {
                 isFirstPrint=false;
             }
 
-            //now we print all the backgrounf of the current entities in the map
+            //now we print all the background of the current entities in the map
             Main.game.getMap().getEntitiesList().forEach(entity-> {
 
                 //we paint the background of used tile
@@ -39,22 +39,19 @@ public class Scene extends JPanel implements ComponentListener {
 
             });
 
-            Main.game.getMap().getEntitiesList().forEach(entity-> {
-                //we paint the entity itself
+            //we paint the entity itself
+            //if the entity is dead , we can't paint it because we want to hide it one last time with the previous
+            //operation when we printed the background
+            //g.fillRect(entity.getPosInPixelMap().x, entity.getPosInPixelMap().y, Map.WIDTH_TILE, Map.HEIGHT_TILE);
+            Main.game.getMap().getEntitiesList().stream().filter(Entity::isAlive).forEach(entity -> {
+                if (entity.getClass() == Enemy.class) g.setColor(Color.RED);
+                else if (entity.getClass() == Exit.class) g.setColor(Color.MAGENTA);
+                else if (entity.getClass() == Bomb.class) g.setColor(Color.CYAN);
+                else if (entity.getClass() == Explosion.class) g.setColor(Color.ORANGE);
+                else if (entity.getClass() == ItemDropped.class) g.setColor(Color.WHITE);
 
-                //if the entity is dead , we can't paint it because we want to hide it one last time with the previous
-                //operation when we printed the background
-                if(entity.isAlive()) {
-
-                    if (entity.getClass() == Enemy.class) g.setColor(Color.RED);
-                    else if (entity.getClass() == Exit.class) g.setColor(Color.MAGENTA);
-                    else if (entity.getClass() == Bomb.class) g.setColor(Color.CYAN);
-                    else if(entity.getClass()== Explosion.class) g.setColor(Color.ORANGE);
-                    else if(entity.getClass()== ItemDropped.class) g.setColor(Color.WHITE);
-
-                    else g.setColor(Color.BLUE);
-                    g.fillRect(entity.getPosInPixelMap().x, entity.getPosInPixelMap().y, Map.WIDTH_TILE, Map.HEIGHT_TILE);
-                }
+                else
+                g.drawImage(entity.getContainer().getNextImage(), entity.getPosInPixelMap().x, entity.getPosInPixelMap().y, Map.WIDTH_TILE, Map.HEIGHT_TILE, null);
 
             });
 

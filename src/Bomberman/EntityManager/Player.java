@@ -5,7 +5,11 @@ import Bomberman.*;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.List;
+import java.util.Map;
 
 public class Player extends MovingEntity implements KeyListener
 {
@@ -21,6 +25,8 @@ public class Player extends MovingEntity implements KeyListener
         isThrowingBomb=new AtomicBoolean(false);
         directionMovement= Direction.IDLE.getDirection();
         futureDirection=Direction.IDLE.getDirection();
+
+        container = new Container(Animation.PLAYER_IDLE);
     }
 
 
@@ -95,6 +101,7 @@ public class Player extends MovingEntity implements KeyListener
                 break;
             case KeyEvent.VK_LEFT:
                 futureDirection=Direction.WEST.getDirection();
+                container.setAnimation(Animation.PLAYER_MOVE_LEFT);
                 break;
             case KeyEvent.VK_RIGHT:
                 futureDirection=Direction.EAST.getDirection();
@@ -116,6 +123,7 @@ public class Player extends MovingEntity implements KeyListener
             case KeyEvent.VK_UP:
             case KeyEvent.VK_DOWN:
                 futureDirection=Direction.IDLE.getDirection();
+                container.setAnimation(Animation.PLAYER_IDLE);
         }
     }
 }

@@ -32,11 +32,12 @@ public class Tile {
         this.type = type;
     }
 
-    public Boolean isFree(){
+    public boolean isFree(){
         return type==TileType.GRASS && entity==null;
     }
 
     public boolean hasEntity(){
         return entity!=null;
     }
+
 }

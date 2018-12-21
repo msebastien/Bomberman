@@ -1,5 +1,6 @@
 package Bomberman.EntityManager;
 
+import Bomberman.Animation;
 import Bomberman.Container;
 import Bomberman.Map;
 
@@ -17,10 +18,9 @@ public abstract class Entity {
     public Entity(Point posInArrayMap)
     {
         init(posInArrayMap);
-        container = new Container();
     }
 
-    //just used to call super frommoving entity
+    //just used to call super from moving entity
     public Entity() {}
 
     public void init(Point posInArrayMap)
@@ -53,5 +53,9 @@ public abstract class Entity {
 
     public Point getPosInArrayMap() {
         return posInArrayMap;
+    }
+
+    public Container getContainer(){
+        return container;
     }
 }
