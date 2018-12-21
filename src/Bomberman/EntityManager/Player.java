@@ -1,11 +1,17 @@
 package Bomberman.EntityManager;
 
-import Bomberman.*;
+import Bomberman.Animation;
+import Bomberman.Direction;
+import Bomberman.Main;
+import Bomberman.Randomator;
+import Bomberman.Tile;
 
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import static Bomberman.Animation.*;
 
 
 public class Player extends MovingEntity implements KeyListener
@@ -24,9 +30,11 @@ public class Player extends MovingEntity implements KeyListener
         directionMovement= Direction.IDLE.getDirection();
         futureDirection=Direction.IDLE.getDirection();
 
-        container.setAnimation(Animation.PLAYER_IDLE);
+        container.setAnimation(PLAYER_IDLE);
+
         // Set duration of the animation based on the movement of the entity
         container.setDuration(moveDuration);
+
     }
 
 
@@ -143,7 +151,7 @@ public class Player extends MovingEntity implements KeyListener
             case KeyEvent.VK_DOWN:
                 // When we release a key, we return to the idle state (direction + animation)
                 futureDirection=Direction.IDLE.getDirection();
-                container.setAnimation(Animation.PLAYER_IDLE);
+                container.setAnimation(PLAYER_IDLE);
         }
     }
 }
