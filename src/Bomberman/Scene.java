@@ -4,8 +4,6 @@ import Bomberman.EntityManager.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 
 public class Scene extends JPanel  {
 
@@ -18,30 +16,10 @@ public class Scene extends JPanel  {
         if(Main.game!=null && Main.game.getMap()!=null && Main.game.getMap().isMapGenerated())
         {
             //if we are on the first print, we have to print all the map first
-
             printAllMap(g);
-
-
-            /*//now we print all the backgrounf of the current entities in the map
-            Main.game.getMap().getEntitiesList().forEach(entity-> {
-
-                //we paint the background of used tile
-                //if this is a subclass of Moving entity
-                if(entity instanceof MovingEntity)
-                {
-                    paintTile(g,((MovingEntity) entity).getOldPosInArrayMap());
-                }
-
-                paintTile(g,entity.getPosInArrayMap());
-
-            });*/
 
             Main.game.getMap().getEntitiesList().forEach(entity-> {
                 //we paint the entity itself
-
-                //if the entity is dead , we can't paint it because we want to hide it one last time with the previous
-                //operation when we printed the background
-                //if(entity.isAlive()) {
 
                     if (entity.getClass() == Enemy.class) g.setColor(Color.RED);
                     else if (entity.getClass() == Exit.class) g.setColor(Color.MAGENTA);
@@ -55,12 +33,8 @@ public class Scene extends JPanel  {
                         g.fillRect(entity.getPosInPixelMap().x, entity.getPosInPixelMap().y, Map.WIDTH_TILE, Map.HEIGHT_TILE);
                     }
 
-                //}
 
             });
-
-            //now we painted one last time the dead entities we can delete them
-            //Main.game.getMap().deleteDeadEntities();
 
             if(stringEndGame!=null)
             {

@@ -56,8 +56,6 @@ public class Game {
 
                 scene.repaint();
 
-
-
                 try {
                     Thread.sleep(THREAD_SLEEP);
                 } catch (InterruptedException e) {

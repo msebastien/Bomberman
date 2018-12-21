@@ -85,7 +85,6 @@ public class Player extends MovingEntity implements KeyListener
     }
 
 
-
     @Override
     public void keyTyped(KeyEvent keyEvent) {
 
