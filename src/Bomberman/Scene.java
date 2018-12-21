@@ -49,7 +49,12 @@ public class Scene extends JPanel  {
                     else if(entity.getClass()== Explosion.class) g.setColor(Color.ORANGE);
                     else if(entity.getClass()== ItemDropped.class) g.setColor(Color.WHITE);
 
-                    else g.drawImage(entity.getContainer().getNextImage(), entity.getPosInPixelMap().x, entity.getPosInPixelMap().y, Map.WIDTH_TILE, Map.HEIGHT_TILE, null);
+                    if(entity.getClass() == Player.class){
+                        g.drawImage(entity.getContainer().getNextImage(), entity.getPosInPixelMap().x, entity.getPosInPixelMap().y, Map.WIDTH_TILE, Map.HEIGHT_TILE, null);
+                    } else {
+                        g.fillRect(entity.getPosInPixelMap().x, entity.getPosInPixelMap().y, Map.WIDTH_TILE, Map.HEIGHT_TILE);
+                    }
+
                 //}
 
             });
