@@ -21,7 +21,7 @@ public class Window extends JFrame  {
         this.setVisible(true);
         this.setResizable(false);
 
-        this.addComponentListener(scene);
+        //this.addComponentListener(scene);
         this.setContentPane(scene);
         this.pack();
     }

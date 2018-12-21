@@ -1,10 +1,11 @@
 package Bomberman.EntityManager;
 
 import Bomberman.Game;
+import Bomberman.Main;
 
 import java.awt.*;
 
-public abstract class TemporaryEntity extends Entity{
+public abstract class TemporaryEntity extends Entity implements ActionOnDisappearance{
 
     protected int countDown;
 
@@ -22,7 +23,8 @@ public abstract class TemporaryEntity extends Entity{
         countDown-= Game.THREAD_SLEEP;
         if(countDown<=0)
         {
-            this.destroy();
+            actionOnDisappearance();
+            //Main.game.getMap().deleteFromMap(this);
         }
 
     }

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Bomb extends TemporaryEntity implements ActionOnDisappearance{
+public class Bomb extends TemporaryEntity {
 
     public final static List<List<Point>> DifferentTypeExplosion= Arrays.asList(
             Arrays.asList(new Point(-1,-1),new Point(-1,1),new Point(1,-1),new Point(1,1)),
@@ -32,11 +32,15 @@ public class Bomb extends TemporaryEntity implements ActionOnDisappearance{
 
     }
 
-    @Override
+    /*@Override
     public void action() {
         super.action();
-        if(countDown<=0)actionOnDisappearance();
-    }
+        if(countDown<=0)
+        {
+            actionOnDisappearance();
+            Main.game.getMap().deleteFromMap(this);
+        }
+    }*/
 
     @Override
     public void actionOnDisappearance()
@@ -54,10 +58,15 @@ public class Bomb extends TemporaryEntity implements ActionOnDisappearance{
             if(map.isInsideMap(impactPoint))
             {
                 Explosion explosion=new Explosion(new Point(impactPoint),1000);
+
+                //on met pas les explosion dans la carte , seulement dans la liste d'entités
                 map.getEntitiesList().add(explosion);
             }
         });
-        map.getTile(posInArrayMap).setEntity(null);
+
+        Main.game.getMap().deleteFromMap(this);
+
+        //map.getTile(posInArrayMap).setEntity(null);
 
         /*Tile tile;
         for(int i=posInArrayMap.x-1;i<=posInArrayMap.x+1;i++)
