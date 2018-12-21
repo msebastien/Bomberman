@@ -65,11 +65,6 @@ public class Container {
 
     // Select the animation to apply to the entity's container
     public void setAnimation(Animation animType){
-        if(globalEntityAnimations.isEmpty()){
-            System.out.println("pas vide");
-        }else{
-            System.out.println("vide");
-        }
         animation = globalEntityAnimations.get(animType).clone();
 
     }
