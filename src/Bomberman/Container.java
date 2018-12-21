@@ -20,7 +20,9 @@ public class Container {
                     entry(Animation.PLAYER_MOVE_LEFT, new BufferedImage[]{
                             ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_000.png") ) }),
                     entry(Animation.PLAYER_MOVE_RIGHT, new BufferedImage[]{
-                            ImageIO.read( new File("resources/player/move_right/Player_MoveRight_000.png") ) })
+                            ImageIO.read( new File("resources/player/move_right/Player_MoveRight_000.png") ),
+                            ImageIO.read( new File("resources/player/move_right/Player_MoveRight_001.png") ),
+                            ImageIO.read( new File("resources/player/move_right/Player_MoveRight_002.png") )})
             );
         }catch(IOException e){
 
@@ -28,17 +30,20 @@ public class Container {
     }
 
     private int timeToNextImage; // Number of ms to go the next image
+    private long lastAnimationTime;
     private BufferedImage animation[];
+    boolean init = false;
     private int index;
 
 
     public Container(){
-        this.index = -1;
+        index = 0;
+        lastAnimationTime = 0;
     }
 
-    // Set the duration of the animation
+    // Set the duration for displaying one image of the animation
     public void setDuration(int moveDuration){
-        timeToNextImage = moveDuration;
+        timeToNextImage = (int)Math.rint((double)moveDuration / (double)animation.length);
     }
 
     public int getDuration(){
@@ -47,15 +52,23 @@ public class Container {
 
     // Select the animation to apply to the entity's container
     public void setAnimation(Animation animType){
-        index = -1;
         animation = globalEntityAnimations.get(animType).clone();
     }
 
     // Get the next image of the animation
     public BufferedImage getNextImage()
     {
-        if(now().toEpochMilli() >=  (long)timeToNextImage){
+        long now = now().toEpochMilli();
+
+        if(now-lastAnimationTime >=  (long)timeToNextImage && init){
             if(index < animation.length-1) index++;
+            lastAnimationTime = now().toEpochMilli();
+        }else if(index == 0){
+            init = true;
+        }
+        else if(index >= animation.length-1){
+            index = 0;
+            init = false;
         }
 
         return animation[index];
