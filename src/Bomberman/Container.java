@@ -60,15 +60,15 @@ public class Container {
     {
         long now = now().toEpochMilli();
 
-        if(now-lastAnimationTime >=  (long)timeToNextImage && init){
-            if(index < animation.length-1) index++;
+        if(index >= animation.length-1){
+            index = 0;
+            init = false;
+        }
+        else if(now-lastAnimationTime >=  (long)timeToNextImage && init){
+            index++;
             lastAnimationTime = now().toEpochMilli();
         }else if(index == 0){
             init = true;
-        }
-        else if(index >= animation.length-1){
-            index = 0;
-            init = false;
         }
 
         return animation[index];
