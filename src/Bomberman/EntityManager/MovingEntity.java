@@ -17,6 +17,9 @@ public abstract class MovingEntity extends Bomberman.EntityManager.Entity
         int pixelHeight=(int) Math.rint(((float)Map.WIDTH_TILE)/((float)moveDurationMs/(float)Game.THREAD_SLEEP));
 
         constPixelMovement=new Point(pixelWidth,pixelHeight);
+
+        // Set duration of the animation based on the movement of the entity
+        container.setDuration(moveDurationMs);
     }
 
 

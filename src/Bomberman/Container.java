@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.awt.image.BufferedImage;
+
+import static java.time.Instant.now;
 import static java.util.Map.entry;
 
 public class Container {
@@ -26,18 +28,21 @@ public class Container {
     }
 
     private int timeToNextImage; // Number of ms to go the next image
-
     private BufferedImage animation[];
     private int index;
 
 
     public Container(){
         this.index = -1;
-
     }
 
+    // Set the duration of the animation
     public void setDuration(int moveDuration){
         timeToNextImage = moveDuration;
+    }
+
+    public int getDuration(){
+        return timeToNextImage;
     }
 
     // Select the animation to apply to the entity's container
@@ -49,7 +54,10 @@ public class Container {
     // Get the next image of the animation
     public BufferedImage getNextImage()
     {
-        if(index < animation.length-1) index++;
+        if(now().toEpochMilli() >  (long)timeToNextImage){
+            if(index < animation.length-1) index++;
+        }
+
         return animation[index];
     }
 
