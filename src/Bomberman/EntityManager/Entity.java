@@ -21,7 +21,9 @@ public abstract class Entity {
     }
 
     //just used to call super from moving entity
-    public Entity() {}
+    public Entity() {
+        container = new Container(); // Create container with the idle "animation" for the player
+    }
 
     public void init(Point posInArrayMap)
     {

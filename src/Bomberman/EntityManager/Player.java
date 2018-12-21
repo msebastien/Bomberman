@@ -24,7 +24,7 @@ public class Player extends MovingEntity implements KeyListener
         directionMovement= Direction.IDLE.getDirection();
         futureDirection=Direction.IDLE.getDirection();
 
-        container = new Container(Animation.PLAYER_IDLE); // Create container with the idle "animation" for the player
+        container.setAnimation(Animation.PLAYER_IDLE);
     }
 
 

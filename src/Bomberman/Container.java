@@ -25,13 +25,13 @@ public class Container {
         }
     }
 
+    private int timeToNextImage; // Number of ms to go the next image
+
     private BufferedImage animation[];
     private int index;
 
 
-    public Container(Animation animType){
-        setAnimation(animType);
-    }
+    public Container(){ this.index = -1;}
 
     // Select the animation to apply to the entity's container
     public void setAnimation(Animation animType){
