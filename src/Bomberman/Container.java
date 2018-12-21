@@ -1,7 +1,5 @@
 package Bomberman;
 
-import Bomberman.EntityManager.Player;
-
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +16,9 @@ public class Container {
                     entry(Animation.PLAYER_IDLE, new BufferedImage[]{
                             ImageIO.read( new File("resources/player/Player_Idle_000.png") ) }),
                     entry(Animation.PLAYER_MOVE_LEFT, new BufferedImage[]{
-                            ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_000.png") ) })
+                            ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_000.png") ) }),
+                    entry(Animation.PLAYER_MOVE_RIGHT, new BufferedImage[]{
+                            ImageIO.read( new File("resources/player/move_right/Player_MoveRight_000.png") ) })
             );
         }catch(IOException e){
 

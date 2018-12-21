@@ -49,10 +49,7 @@ public class Game {
                     //for loop necessary to go through concurrentModification
                     for(int i=0;i<map.getEntitiesList().size();i++)
                     {
-                        //if(map.getEntitiesList().get(i).isAlive())
-                        //{
                             map.getEntitiesList().get(i).action();
-                        //}
                     }
 
                 }

@@ -10,7 +10,7 @@ public abstract class Entity {
 
     protected Point posInArrayMap;
     protected Point posInPixelMap;
-    Container container;
+    Container container; // contains images for animation
 
     //check if we can delete the entity from the entity list
     //protected boolean isAlive;
