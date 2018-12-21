@@ -55,8 +55,8 @@ public class Container {
     }
 
     // Set the duration for displaying one image of the animation
-    public void setDuration(int moveDuration){
-        timeToNextImage = (int)Math.rint((double)moveDuration / (double)animation.length);
+    public void setDuration(int moveDurationMs){
+        timeToNextImage = (int)Math.rint((double)moveDurationMs / (double)(animation.length*10));
     }
 
     public int getDuration(){
