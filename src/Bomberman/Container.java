@@ -31,7 +31,14 @@ public class Container {
     private int index;
 
 
-    public Container(){ this.index = -1;}
+    public Container(){
+        this.index = -1;
+
+    }
+
+    public void setDuration(int moveDuration){
+        timeToNextImage = moveDuration;
+    }
 
     // Select the animation to apply to the entity's container
     public void setAnimation(Animation animType){
