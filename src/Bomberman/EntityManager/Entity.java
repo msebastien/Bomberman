@@ -1,5 +1,6 @@
 package Bomberman.EntityManager;
 
+import Bomberman.Container;
 import Bomberman.Map;
 
 import java.awt.Point;
@@ -8,6 +9,7 @@ public abstract class Entity {
 
     protected Point posInArrayMap;
     protected Point posInPixelMap;
+    Container container;
 
     //check if we can delete the entity from the entity list
     //protected boolean isAlive;
@@ -15,6 +17,7 @@ public abstract class Entity {
     public Entity(Point posInArrayMap)
     {
         init(posInArrayMap);
+        container = new Container();
     }
 
     //just used to call super frommoving entity

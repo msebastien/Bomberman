@@ -17,7 +17,7 @@ public class Randomator {
     }
 
     /**
-     * @param proba a number in [0,100[
+     * @param proba a number in [0,100]
      * @return true with proba% of chance
      */
     public static boolean probaOfSuccess(int proba)
