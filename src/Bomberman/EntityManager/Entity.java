@@ -18,14 +18,14 @@ public abstract class Entity {
     }
 
     //just used to call super from moving entity
-    public Entity() {}
+    public Entity() {
+        container = new Container();
+    }
 
     public void init(Point posInArrayMap)
     {
         this.posInArrayMap=new Point(posInArrayMap);
         this.posInPixelMap=new Point(posInArrayMap.x* Map.WIDTH_TILE,posInArrayMap.y*Map.HEIGHT_TILE);
-
-        container = new Container();
     }
 
     public abstract void action();
