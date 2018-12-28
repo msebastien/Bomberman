@@ -108,9 +108,6 @@ public abstract class MovingEntity extends Bomberman.EntityManager.Entity
         //this.oldPosInArrayMap=new Point(posInArrayMap);
     }
 
-    /*public Point getOldPosInArrayMap() {
-        return oldPosInArrayMap;
-    }*/
 
     public abstract void changeDirection();
 }

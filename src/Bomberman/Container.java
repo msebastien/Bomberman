@@ -65,7 +65,7 @@ public class Container {
 
     // Select the animation to apply to the entity's container
     public void setAnimation(Animation animType){
-        animation = globalEntityAnimations.get(animType).clone();
+        animation = globalEntityAnimations.get(animType);
 
     }
 
