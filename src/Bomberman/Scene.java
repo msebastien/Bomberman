@@ -9,7 +9,6 @@ import java.awt.event.ComponentListener;
 
 public class Scene extends JPanel  {
 
-    private String stringEndGame;
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -58,19 +57,9 @@ public class Scene extends JPanel  {
             //now we painted one last time the dead entities we can delete them
             //Main.game.getMap().deleteDeadEntities();
 
-            if(stringEndGame!=null)
-            {
-                g.setFont(new Font("TimesRoman",Font.BOLD,getWidth()/10));
-                g.setColor(Color.MAGENTA);
-                g.drawString(stringEndGame,getWidth()/2,getHeight()/2);
-                return;
-            }
         }
     }
 
-    public void setStringEndGame(String stringEndGame) {
-        this.stringEndGame = stringEndGame;
-    }
 
     private void printAllMap(Graphics g)
     {

@@ -1,6 +1,7 @@
 package Bomberman.EntityManager;
 
 
+import Bomberman.IssueGame;
 import Bomberman.Main;
 
 public class Exit extends Entity {
@@ -11,7 +12,7 @@ public class Exit extends Entity {
 
         if(entity.getClass()==Player.class)
         {
-            Main.game.end("Victoire");
+            Main.game.end(IssueGame.VICTORY);
         }
 
         //we don't care because this is not a movingentity ,so we never save this returned value

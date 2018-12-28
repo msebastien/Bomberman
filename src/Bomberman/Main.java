@@ -12,7 +12,7 @@ public class Main {
         scene.setPreferredSize(new Dimension(1000,1000));
 
         Window window=new Window(scene);
-        game=new Game(scene);
+        game=new Game(scene,window);
 
     }
 }

@@ -18,13 +18,19 @@ public class Player extends MovingEntity implements KeyListener
 
     public Player(int moveDuration){
         super(moveDuration);
-        bombReserve=15;
         futurePosBomb=new Point();
         isThrowingBomb=new AtomicBoolean(false);
+
+    }
+
+    @Override
+    public void init(Point posInArrayMap) {
+        super.init(posInArrayMap);
+        isThrowingBomb.set(false);
+        bombReserve=Game.nbrBombInitReserve;
         directionMovement= Direction.IDLE.getDirection();
         futureDirection=Direction.IDLE.getDirection();
     }
-
 
     @Override
     public boolean isMoveBegin() {
@@ -64,12 +70,18 @@ public class Player extends MovingEntity implements KeyListener
     @Override
     public void action() {
         super.action();
+
+        //System.out.println(this+"\n\t>"+directionMovement.toString());
         if(isThrowingBomb.get()&&bombReserve>0)
         {
             isThrowingBomb.set(false);
             placeBomb();
             bombReserve--;
         }
+    }
+
+    public int getBombReserve() {
+        return bombReserve;
     }
 
     public void addBombToReserve()
@@ -82,11 +94,8 @@ public class Player extends MovingEntity implements KeyListener
 
     }
 
-
-
     @Override
     public void keyTyped(KeyEvent keyEvent) {
-
     }
 
     @Override
@@ -108,20 +117,20 @@ public class Player extends MovingEntity implements KeyListener
                 break;
 
                 //gestion bombe
-            case KeyEvent.VK_SPACE:
-                isThrowingBomb.set(true);
-                break;
-                //direction Bombe
             case KeyEvent.VK_Q:
                 futurePosBomb=Direction.WEST.getDirection();
+                isThrowingBomb.set(true);
                 break;
             case KeyEvent.VK_D:
+                isThrowingBomb.set(true);
                 futurePosBomb=Direction.EAST.getDirection();
                 break;
             case KeyEvent.VK_Z:
+                isThrowingBomb.set(true);
                 futurePosBomb=Direction.NORTH.getDirection();
                 break;
             case KeyEvent.VK_S:
+                isThrowingBomb.set(true);
                 futurePosBomb=Direction.SOUTH.getDirection();
 
         }

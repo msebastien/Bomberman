@@ -16,26 +16,42 @@ public class Map {
     private Tile[][] map;
     //contain all the current entities
     private Vector<Entity> entitiesList;
-
-
+    //a reference to player;
+    Player player;
 
     private boolean isMapGenerated=false;
-    private final int PROBA_GENERATION_MAP=75;
-    private final int NBR_ENTITY=20;
+    private final int PROBA_GENERATION_MAP=77;
+
     private final int MIN_DISTANCE_FROM_PLAYER_SPAWN=5;
 
-    public Map() {
-        map =new Tile[MAP_SIZE_X][MAP_SIZE_Y];
-        entitiesList=new Vector<>(0);
-    }
+    public Map(Scene scene) {
 
-
-    public void init(Scene scene)
-    {
         WIDTH_TILE=scene.getWidth()/MAP_SIZE_X;
         HEIGHT_TILE=scene.getHeight()/MAP_SIZE_Y;
         if(WIDTH_TILE<HEIGHT_TILE) HEIGHT_TILE=WIDTH_TILE;
         else WIDTH_TILE=HEIGHT_TILE;
+
+        map =new Tile[MAP_SIZE_X][MAP_SIZE_Y];
+        entitiesList=new Vector<>(0);
+
+        player=new Player(700);
+
+        scene.setFocusable(true);
+        scene.requestFocus();
+        scene.addKeyListener(player);
+
+    }
+
+
+
+
+    public void init()
+    {
+        /*WIDTH_TILE=scene.getWidth()/MAP_SIZE_X;
+        HEIGHT_TILE=scene.getHeight()/MAP_SIZE_Y;
+        if(WIDTH_TILE<HEIGHT_TILE) HEIGHT_TILE=WIDTH_TILE;
+        else WIDTH_TILE=HEIGHT_TILE;*/
+
 
         isMapGenerated=false;
 
@@ -66,7 +82,7 @@ public class Map {
         }
 
         //insert player
-        Player player=new Player(800);
+        //player=new Player(800);
         insertEntityInMap(player,listOfFreeTile);
         //we filter the list to prevent from spawn near an enemy
         listOfFreeTile=listOfFreeTile.stream().filter(elt->
@@ -77,22 +93,26 @@ public class Map {
 
         //insert enemy
         Enemy enemy;
-        while(i<NBR_ENTITY && !listOfFreeTile.isEmpty())
+
+        int nbrEnemy=0;
+        if(!listOfFreeTile.isEmpty())nbrEnemy=(int)(Game.nbrEnemy *listOfFreeTile.size());
+
+        while(i<nbrEnemy && !listOfFreeTile.isEmpty())
         {
-            enemy=new Enemy(1000);
+            enemy=new Enemy(Game.speedEnemy);
             insertEntityInMap(enemy,listOfFreeTile);
             i++;
         }
-
 
         //insert exit
         Exit exit=new Exit();
         insertEntityInMap(exit,listOfFreeTile);
 
+/*
         scene.setFocusable(true);
         scene.requestFocus();
         scene.addKeyListener(player);
-
+*/
 
         isMapGenerated=true;
     }
@@ -107,7 +127,6 @@ public class Map {
             map[tileCoord.x][tileCoord.y].setEntity(entity);
             entitiesList.add(entity);
             entity.init(tileCoord);
-
             listOfFreeTile.remove(tileCoord);
         }
     }
@@ -155,6 +174,10 @@ public class Map {
         return map[x][y];
     }
 
+    public Player getPlayer() {
+        return player;
+    }
+
     public boolean isInsideMap(Point point)
     {
         return point.x>=0&&point.y>=0 && point.x<MAP_SIZE_X && point.y<MAP_SIZE_Y;
@@ -188,6 +211,8 @@ public class Map {
             map[entity.getPosInArrayMap().x][entity.getPosInArrayMap().y].setEntity(entity);
         }
     }
+
+
 
     public void afficher()
     {

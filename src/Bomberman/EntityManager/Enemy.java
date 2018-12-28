@@ -26,7 +26,7 @@ public class Enemy extends MovingEntity implements ActionOnDisappearance
         if(entity.getClass()==Player.class)
         {
             //this is the end of the game
-            Main.game.end("Defaite");
+            Main.game.end(IssueGame.DEFEAT);
         }
 
     }
