@@ -1,5 +1,6 @@
 package Bomberman.EntityManager;
 
+import Bomberman.Animation;
 import Bomberman.Container;
 import Bomberman.Map;
 
@@ -9,34 +10,23 @@ public abstract class Entity {
 
     protected Point posInArrayMap;
     protected Point posInPixelMap;
-    Container container;
-
-    //check if we can delete the entity from the entity list
-    //protected boolean isAlive;
+    Container container; // contains images for animation
 
     public Entity(Point posInArrayMap)
     {
         init(posInArrayMap);
+    }
+
+    //just used to call super from moving entity
+    public Entity() {
         container = new Container();
     }
 
-    //just used to call super frommoving entity
-    public Entity() {}
-
     public void init(Point posInArrayMap)
     {
-        //isAlive=true;
         this.posInArrayMap=new Point(posInArrayMap);
         this.posInPixelMap=new Point(posInArrayMap.x* Map.WIDTH_TILE,posInArrayMap.y*Map.HEIGHT_TILE);
     }
-
-    /*public boolean isAlive() {
-        return isAlive;
-    }
-
-    public void destroy() {
-        isAlive = false;
-    }*/
 
     public abstract void action();
 
@@ -53,5 +43,9 @@ public abstract class Entity {
 
     public Point getPosInArrayMap() {
         return posInArrayMap;
+    }
+
+    public Container getContainer(){
+        return container;
     }
 }

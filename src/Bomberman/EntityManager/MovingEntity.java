@@ -9,13 +9,6 @@ public abstract class MovingEntity extends Bomberman.EntityManager.Entity
     protected Point directionMovement;
     protected Point constPixelMovement;
 
-    //protected Point oldPosInArrayMap;
-
-    /*public MovingEntity(Point posInArrayMap, int moveDurationMs) {
-        //super(posInArrayMap);
-
-        init(posInArrayMap,moveDurationMs);
-    }*/
 
     //just used to a create a player without parameter
     public MovingEntity(int moveDurationMs) {
@@ -24,8 +17,9 @@ public abstract class MovingEntity extends Bomberman.EntityManager.Entity
         int pixelHeight=(int) Math.rint(((float)Map.WIDTH_TILE)/((float)moveDurationMs/(float)Game.THREAD_SLEEP));
 
         constPixelMovement=new Point(pixelWidth,pixelHeight);
-    }
 
+
+    }
 
 
     /**
@@ -114,9 +108,6 @@ public abstract class MovingEntity extends Bomberman.EntityManager.Entity
         //this.oldPosInArrayMap=new Point(posInArrayMap);
     }
 
-    /*public Point getOldPosInArrayMap() {
-        return oldPosInArrayMap;
-    }*/
 
     public abstract void changeDirection();
 }
