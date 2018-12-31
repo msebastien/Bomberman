@@ -30,7 +30,7 @@ public class Game {
 
     //number between 0 and 1 -> 1= all free case with enemy 0= without enemy
     private Map map;
-    public final static int THREAD_SLEEP=50;//in ms
+    public final static int THREAD_SLEEP=15;//in ms
 
     private Scene scene;
     private Window window;

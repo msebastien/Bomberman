@@ -9,14 +9,6 @@ public abstract class MovingEntity extends Bomberman.EntityManager.Entity
     protected Point directionMovement;
     protected Point constPixelMovement;
 
-    //protected Point oldPosInArrayMap;
-
-    /*public MovingEntity(Point posInArrayMap, int moveDurationMs) {
-        //super(posInArrayMap);
-
-        init(posInArrayMap,moveDurationMs);
-    }*/
-
     //just used to a create a player without parameter
     public MovingEntity(int moveDurationMs) {
         super();
@@ -27,6 +19,11 @@ public abstract class MovingEntity extends Bomberman.EntityManager.Entity
     }
 
 
+    @Override
+    public void init(Point posInArrayMap) {
+        super.init(posInArrayMap);
+
+    }
 
     /**
      * this function solve the effect of a collision with an other entity, win the game if we enter in the exit
@@ -108,15 +105,8 @@ public abstract class MovingEntity extends Bomberman.EntityManager.Entity
         translatePixelEntity();
     }
 
-    @Override
-    public void init(Point posInArrayMap) {
-        super.init(posInArrayMap);
-        //this.oldPosInArrayMap=new Point(posInArrayMap);
-    }
 
-    /*public Point getOldPosInArrayMap() {
-        return oldPosInArrayMap;
-    }*/
+
 
     public abstract void changeDirection();
 }

@@ -37,26 +37,21 @@ public class Scene extends JPanel  {
             });*/
 
             Main.game.getMap().getEntitiesList().forEach(entity-> {
-                //we paint the entity itself
 
-                //if the entity is dead , we can't paint it because we want to hide it one last time with the previous
-                //operation when we printed the background
-                //if(entity.isAlive()) {
+                if (entity.getClass() == Enemy.class) g.setColor(Color.RED);
+                else if (entity.getClass() == Exit.class) g.setColor(Color.MAGENTA);
+                else if (entity.getClass() == Bomb.class) g.setColor(Color.CYAN);
+                else if(entity.getClass()== Explosion.class) g.setColor(Color.ORANGE);
+                else if(entity.getClass()== ItemDropped.class) g.setColor(Color.WHITE);
+                else g.setColor(Color.BLUE);
 
-                    if (entity.getClass() == Enemy.class) g.setColor(Color.RED);
-                    else if (entity.getClass() == Exit.class) g.setColor(Color.MAGENTA);
-                    else if (entity.getClass() == Bomb.class) g.setColor(Color.CYAN);
-                    else if(entity.getClass()== Explosion.class) g.setColor(Color.ORANGE);
-                    else if(entity.getClass()== ItemDropped.class) g.setColor(Color.WHITE);
-                    else g.setColor(Color.BLUE);
-
+                if(entity.getClass() == Player.class){
+                    g.drawImage(entity.getContainer().getNextImage(), entity.getPosInPixelMap().x, entity.getPosInPixelMap().y, Map.WIDTH_TILE, Map.HEIGHT_TILE, null);
+                } else {
                     g.fillRect(entity.getPosInPixelMap().x, entity.getPosInPixelMap().y, Map.WIDTH_TILE, Map.HEIGHT_TILE);
-                //}
+                }
 
             });
-
-            //now we painted one last time the dead entities we can delete them
-            //Main.game.getMap().deleteDeadEntities();
 
         }
     }

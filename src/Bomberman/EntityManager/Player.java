@@ -1,11 +1,17 @@
 package Bomberman.EntityManager;
 
-import Bomberman.*;
+import Bomberman.Animation;
+import Bomberman.Direction;
+import Bomberman.Main;
+import Bomberman.Randomator;
+import Bomberman.Tile;
+import Bomberman.Game;
 
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.concurrent.atomic.AtomicBoolean;
+
 
 public class Player extends MovingEntity implements KeyListener
 {
@@ -18,9 +24,13 @@ public class Player extends MovingEntity implements KeyListener
 
     public Player(int moveDuration){
         super(moveDuration);
+
         futurePosBomb=new Point();
         isThrowingBomb=new AtomicBoolean(false);
 
+        // init container for animations
+        container.setAnimation(Animation.PLAYER_IDLE);
+        container.setDuration(moveDuration); // Set duration of the animation based on the movement of the entity
     }
 
     @Override
@@ -30,6 +40,7 @@ public class Player extends MovingEntity implements KeyListener
         bombReserve=Game.nbrBombInitReserve;
         directionMovement= Direction.IDLE.getDirection();
         futureDirection=Direction.IDLE.getDirection();
+
     }
 
     @Override
@@ -105,9 +116,11 @@ public class Player extends MovingEntity implements KeyListener
         {
             case KeyEvent.VK_LEFT:
                 futureDirection=Direction.WEST.getDirection();
+                container.setAnimation(Animation.PLAYER_MOVE_LEFT);
                 break;
             case KeyEvent.VK_RIGHT:
                 futureDirection=Direction.EAST.getDirection();
+                container.setAnimation(Animation.PLAYER_MOVE_RIGHT);
                 break;
             case KeyEvent.VK_UP:
                 futureDirection=Direction.NORTH.getDirection();
@@ -116,7 +129,7 @@ public class Player extends MovingEntity implements KeyListener
                 futureDirection=Direction.SOUTH.getDirection();
                 break;
 
-                //gestion bombe
+                //Bomb management
             case KeyEvent.VK_Q:
                 futurePosBomb=Direction.WEST.getDirection();
                 isThrowingBomb.set(true);
@@ -145,6 +158,7 @@ public class Player extends MovingEntity implements KeyListener
             case KeyEvent.VK_UP:
             case KeyEvent.VK_DOWN:
                 futureDirection=Direction.IDLE.getDirection();
+                container.setAnimation(Animation.PLAYER_IDLE);
         }
     }
 }

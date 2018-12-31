@@ -1,54 +1,93 @@
 package Bomberman;
 
-import java.util.List;
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 import java.awt.image.BufferedImage;
 
+import static java.time.Instant.now;
+import static java.util.Map.entry;
+
 public class Container {
-    static Map<Animation, List<BufferedImage>> entityAnimations;
-    private List<BufferedImage> tileImages;
+    static Map<Animation, BufferedImage[]> globalEntityAnimations;
+
+    static {
+        try {
+            globalEntityAnimations = (Map<Animation, BufferedImage[]>) Map.ofEntries(
+                    entry(Animation.PLAYER_IDLE, new BufferedImage[]{
+                            ImageIO.read( new File("resources/player/Player_Idle_000.png") )}),
+                    entry(Animation.PLAYER_MOVE_LEFT, new BufferedImage[]{
+                            ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_000.png") ),
+                            ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_001.png") ),
+                            ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_002.png") ),
+                            ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_003.png") ),
+                            ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_004.png") ),
+                            ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_005.png") ),
+                            ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_006.png") ),
+                            ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_007.png") )}),
+                    entry(Animation.PLAYER_MOVE_RIGHT, new BufferedImage[]{
+                            ImageIO.read( new File("resources/player/move_right/Player_MoveRight_000.png") ),
+                            ImageIO.read( new File("resources/player/move_right/Player_MoveRight_001.png") ),
+                            ImageIO.read( new File("resources/player/move_right/Player_MoveRight_002.png") ),
+                            ImageIO.read( new File("resources/player/move_right/Player_MoveRight_003.png") ),
+                            ImageIO.read( new File("resources/player/move_right/Player_MoveRight_004.png") ),
+                            ImageIO.read( new File("resources/player/move_right/Player_MoveRight_005.png") ),
+                            ImageIO.read( new File("resources/player/move_right/Player_MoveRight_006.png") ),
+                            ImageIO.read( new File("resources/player/move_right/Player_MoveRight_007.png") )})
+            );
+        }catch(IOException e){
+            System.out.println(e.toString());
+        }
+    }
+
+    private int timeToNextImage; // Number of ms to go the next image
+    private long lastAnimationTime;
+    private BufferedImage animation[];
+    boolean continueAnim;
     private int index;
 
 
+    public Container(){
+        index = 0;
+        lastAnimationTime = 0;
+        continueAnim = false;
 
-
-    public Container() {
-        this.tileImages = tileImages;
-        this.index = 0;
     }
 
-    // Tiles
-    public List<BufferedImage> getTileImages() {
-        return tileImages;
+    // Set the duration for displaying one image of the animation
+    public void setDuration(int moveDurationMs){
+        if(animation.length > 0) timeToNextImage = (int)Math.rint((double)moveDurationMs / (double)(animation.length*10));
     }
 
-    public void setTileImages(List<BufferedImage> tileImages) {
-        this.tileImages = tileImages;
+    public int getDuration(){
+        return timeToNextImage;
     }
 
+    // Select the animation to apply to the entity's container
+    public void setAnimation(Animation animType){
+        animation = globalEntityAnimations.get(animType);
 
-    // Animations
-    public BufferedImage getNextImage(Animation animationType)
+    }
+
+    // Get the next image of the animation
+    public BufferedImage getNextImage()
     {
-        index++;
-        return entityAnimations.get(animationType).get(index);
-    }
+        long now = now().toEpochMilli();
 
-    // Set 1 animation
-    public void setAnimation(Animation animationType, List<BufferedImage> animation){
-        for(int i=0; i<animation.size(); i++){
-            entityAnimations.get(animationType).add(animation.get(i));
+        if(index >= animation.length-1){ // Checks if we reach the end of the array/animation
+            index = 0;
+            continueAnim = false;
         }
-    }
-
-    /*public void setAnimations(List<Animation> animationTypes, List<BufferedImage> animation){
-        for(int i=0; i<animation.size(); i++){
-            entityAnimations.get(animationTypes.get(i)).set(i, animation.get(i));
+        else if(now-lastAnimationTime >=  (long)timeToNextImage && continueAnim){ // Increment index every specific period of time
+            index++;
+            lastAnimationTime = now().toEpochMilli();
+        }else if(index == 0){ // Checks if we are at the beginning of the animation
+            continueAnim = true;
         }
-    }*/
 
-
-
+        return animation[index];
+    }
 
 
 }
