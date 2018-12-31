@@ -1,6 +1,5 @@
 package Bomberman;
 
-import com.sun.javafx.binding.StringConstant;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,7 +37,6 @@ public class Window extends JFrame  {
         /*
         Creation des layouts du jeu
          */
-        //this.setLayout(new BorderLayout());
         hud=new JPanel();
         hud.setLayout(new BoxLayout(hud,BoxLayout.PAGE_AXIS));
 
@@ -88,8 +86,7 @@ public class Window extends JFrame  {
 
         //on met le tout dans le cardlyout
         menuGestion=new CardLayout();
-        //baseJPanel=new JPanel();
-        //baseJPanel.setLayout(menuGestion);
+
         this.setLayout(menuGestion);
         this.add(printGame,"printGame");
         this.add(menuPause,"menuPause");
