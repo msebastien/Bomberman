@@ -3,11 +3,9 @@ package Bomberman;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+import java.time.Instant;
 import java.util.Map;
 import java.awt.image.BufferedImage;
-
-import static java.time.Instant.now;
-import static java.util.Map.entry;
 
 public class Container {
     static Map<Animation, BufferedImage[]> globalEntityAnimations;
@@ -15,9 +13,9 @@ public class Container {
     static {
         try {
             globalEntityAnimations = (Map<Animation, BufferedImage[]>) Map.ofEntries(
-                    entry(Animation.PLAYER_IDLE, new BufferedImage[]{
+                    Map.entry(Animation.PLAYER_IDLE, new BufferedImage[]{
                             ImageIO.read( new File("resources/player/Player_Idle_000.png") )}),
-                    entry(Animation.PLAYER_MOVE_LEFT, new BufferedImage[]{
+                    Map.entry(Animation.PLAYER_MOVE_LEFT, new BufferedImage[]{
                             ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_000.png") ),
                             ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_001.png") ),
                             ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_002.png") ),
@@ -26,7 +24,7 @@ public class Container {
                             ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_005.png") ),
                             ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_006.png") ),
                             ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_007.png") )}),
-                    entry(Animation.PLAYER_MOVE_RIGHT, new BufferedImage[]{
+                    Map.entry(Animation.PLAYER_MOVE_RIGHT, new BufferedImage[]{
                             ImageIO.read( new File("resources/player/move_right/Player_MoveRight_000.png") ),
                             ImageIO.read( new File("resources/player/move_right/Player_MoveRight_001.png") ),
                             ImageIO.read( new File("resources/player/move_right/Player_MoveRight_002.png") ),
@@ -73,7 +71,7 @@ public class Container {
     // Get the next image of the animation
     public BufferedImage getNextImage()
     {
-        long now = now().toEpochMilli();
+        long now = Instant.now().toEpochMilli();
 
         if(index >= animation.length-1){ // Checks if we reach the end of the array/animation
             index = 0;
@@ -81,7 +79,7 @@ public class Container {
         }
         else if(now-lastAnimationTime >=  (long)timeToNextImage && continueAnim){ // Increment index every specific period of time
             index++;
-            lastAnimationTime = now().toEpochMilli();
+            lastAnimationTime = Instant.now().toEpochMilli();
         }else if(index == 0){ // Checks if we are at the beginning of the animation
             continueAnim = true;
         }
