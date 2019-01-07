@@ -12,7 +12,7 @@ public class Container {
 
     static {
         try {
-            globalEntityAnimations = (Map<Animation, BufferedImage[]>) Map.ofEntries(
+            globalEntityAnimations = Map.ofEntries(
                     Map.entry(Animation.PLAYER_IDLE, new BufferedImage[]{
                             ImageIO.read( new File("resources/player/Player_Idle_000.png") )}),
                     Map.entry(Animation.PLAYER_MOVE_LEFT, new BufferedImage[]{

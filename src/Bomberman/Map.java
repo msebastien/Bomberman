@@ -14,10 +14,15 @@ public class Map {
     public static int WIDTH_TILE;
 
     private Tile[][] map;
+
     //contain all the current entities
     private Vector<Entity> entitiesList;
+
     //a reference to player;
     Player player;
+
+    // Graph
+    Graph graph;
 
     private boolean isMapGenerated=false;
     private final int PROBA_GENERATION_MAP=77;

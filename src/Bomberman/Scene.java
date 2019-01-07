@@ -21,7 +21,6 @@ public class Scene extends JPanel  {
 
             printAllMap(g);
 
-
             /*//now we print all the backgrounf of the current entities in the map
             Main.game.getMap().getEntitiesList().forEach(entity-> {
 
