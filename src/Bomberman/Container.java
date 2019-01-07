@@ -12,7 +12,29 @@ public class Container {
 
     static {
         try {
-            globalEntityAnimations = Map.ofEntries(
+            globalEntityAnimations.put(Animation.PLAYER_IDLE, new BufferedImage[]{
+                ImageIO.read( new File("resources/player/Player_Idle_000.png") )});
+
+            globalEntityAnimations.put(Animation.PLAYER_MOVE_LEFT, new BufferedImage[]{
+                ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_000.png") ),
+                ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_001.png") ),
+                ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_002.png") ),
+                ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_003.png") ),
+                ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_004.png") ),
+                ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_005.png") ),
+                ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_006.png") ),
+                ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_007.png") )});
+
+            globalEntityAnimations.put(Animation.PLAYER_MOVE_RIGHT, new BufferedImage[]{
+                ImageIO.read( new File("resources/player/move_right/Player_MoveRight_000.png") ),
+                ImageIO.read( new File("resources/player/move_right/Player_MoveRight_001.png") ),
+                ImageIO.read( new File("resources/player/move_right/Player_MoveRight_002.png") ),
+                ImageIO.read( new File("resources/player/move_right/Player_MoveRight_003.png") ),
+                ImageIO.read( new File("resources/player/move_right/Player_MoveRight_004.png") ),
+                ImageIO.read( new File("resources/player/move_right/Player_MoveRight_005.png") ),
+                ImageIO.read( new File("resources/player/move_right/Player_MoveRight_006.png") ),
+                ImageIO.read( new File("resources/player/move_right/Player_MoveRight_007.png") )});
+            /*globalEntityAnimations = Map.ofEntries(
                     Map.entry(Animation.PLAYER_IDLE, new BufferedImage[]{
                             ImageIO.read( new File("resources/player/Player_Idle_000.png") )}),
                     Map.entry(Animation.PLAYER_MOVE_LEFT, new BufferedImage[]{
@@ -33,7 +55,7 @@ public class Container {
                             ImageIO.read( new File("resources/player/move_right/Player_MoveRight_005.png") ),
                             ImageIO.read( new File("resources/player/move_right/Player_MoveRight_006.png") ),
                             ImageIO.read( new File("resources/player/move_right/Player_MoveRight_007.png") )})
-            );
+            );*/
         }catch(IOException e){
             System.out.println(e.toString());
         }
