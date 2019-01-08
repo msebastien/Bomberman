@@ -4,11 +4,12 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.Map;
 import java.awt.image.BufferedImage;
 
 public class Container {
-    static Map<Animation, BufferedImage[]> globalEntityAnimations;
+    static Map<Animation, BufferedImage[]> globalEntityAnimations=new HashMap<>();
 
     static {
         try {
