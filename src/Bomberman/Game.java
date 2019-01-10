@@ -4,7 +4,6 @@ package Bomberman;
 
 public class Game {
 
-
     /**
      * Rules for the game level 1
      * the rule for a level-up
@@ -17,20 +16,24 @@ public class Game {
     public static float nbrEnemy;
 
 
-    private final int SPEED_ENEMY_LEVEL_0 =1000;
-    private final int INC_SPPED_ENEMY=5;//each level we add this amount of milliseconds for an enemy move
+    private final int SPEED_ENEMY_LEVEL_0 =700;
+    private final int INC_SPPED_ENEMY=10;//each level we add this amount of milliseconds for an enemy move
     public static int speedEnemy;
 
+    private final int LIFE_ENEMY_LEVEL_0=1;
 
     private final int NUMBER_BOMB_LEVEL_0 =3;
     private final int INC_NUMBER_BOMB=1;//each level we add this amount of bomb to the player's stack
     public static int nbrBombInitReserve;
+
+    public final static int COUNT_DOWN_BOMB=3000;
+
     /**************/
 
 
     //number between 0 and 1 -> 1= all free case with enemy 0= without enemy
     private Map map;
-    public final static int THREAD_SLEEP=15;//in ms
+    public final static int THREAD_SLEEP=50;//in ms
 
     private Scene scene;
     private Window window;
@@ -109,11 +112,11 @@ public class Game {
                     {
                         //if(map.getEntitiesList().get(i).isAlive())
                         //{
-                            map.getEntitiesList().get(i).action();
+                        map.getEntitiesList().get(i).action();
                         //}
                     }
 
-                    window.updateHUD(map.getPlayer().getBombReserve());
+                    window.updateHUD(map.getPlayer());
 
                 }
 

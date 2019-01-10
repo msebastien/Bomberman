@@ -1,62 +1,160 @@
 package Bomberman;
 
+import Bomberman.EntityManager.Entity;
+import Bomberman.EntityManager.EntityType;
+
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.awt.image.BufferedImage;
 
 public class Container {
-    static Map<Animation, BufferedImage[]> globalEntityAnimations=new HashMap<>();
+    static Map<EntityType,Map<Animation, BufferedImage[]>> entityAnimations =new HashMap<>();
+    static Map<Animation,BufferedImage[]> backgroundAnimation=new HashMap<>();
 
     static {
         try {
-            globalEntityAnimations.put(Animation.PLAYER_IDLE, new BufferedImage[]{
-                ImageIO.read( new File("resources/player/Player_Idle_000.png") )});
 
-            globalEntityAnimations.put(Animation.PLAYER_MOVE_LEFT, new BufferedImage[]{
-                ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_000.png") ),
-                ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_001.png") ),
-                ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_002.png") ),
-                ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_003.png") ),
-                ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_004.png") ),
-                ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_005.png") ),
-                ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_006.png") ),
-                ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_007.png") )});
+            backgroundAnimation.put(Animation.OBSTACLE,new BufferedImage[]{
+                    ImageIO.read( new File("resources/background/obstacle.png") )
+            });
+            backgroundAnimation.put(Animation.GRASS,new BufferedImage[]{
+                    ImageIO.read( new File("resources/background/grass.png") )
+            });
 
-            globalEntityAnimations.put(Animation.PLAYER_MOVE_RIGHT, new BufferedImage[]{
-                ImageIO.read( new File("resources/player/move_right/Player_MoveRight_000.png") ),
-                ImageIO.read( new File("resources/player/move_right/Player_MoveRight_001.png") ),
-                ImageIO.read( new File("resources/player/move_right/Player_MoveRight_002.png") ),
-                ImageIO.read( new File("resources/player/move_right/Player_MoveRight_003.png") ),
-                ImageIO.read( new File("resources/player/move_right/Player_MoveRight_004.png") ),
-                ImageIO.read( new File("resources/player/move_right/Player_MoveRight_005.png") ),
-                ImageIO.read( new File("resources/player/move_right/Player_MoveRight_006.png") ),
-                ImageIO.read( new File("resources/player/move_right/Player_MoveRight_007.png") )});
-            /*globalEntityAnimations = Map.ofEntries(
-                    Map.entry(Animation.PLAYER_IDLE, new BufferedImage[]{
-                            ImageIO.read( new File("resources/player/Player_Idle_000.png") )}),
-                    Map.entry(Animation.PLAYER_MOVE_LEFT, new BufferedImage[]{
-                            ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_000.png") ),
-                            ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_001.png") ),
-                            ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_002.png") ),
-                            ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_003.png") ),
-                            ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_004.png") ),
-                            ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_005.png") ),
-                            ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_006.png") ),
-                            ImageIO.read( new File("resources/player/move_left/Player_MoveLeft_007.png") )}),
-                    Map.entry(Animation.PLAYER_MOVE_RIGHT, new BufferedImage[]{
-                            ImageIO.read( new File("resources/player/move_right/Player_MoveRight_000.png") ),
-                            ImageIO.read( new File("resources/player/move_right/Player_MoveRight_001.png") ),
-                            ImageIO.read( new File("resources/player/move_right/Player_MoveRight_002.png") ),
-                            ImageIO.read( new File("resources/player/move_right/Player_MoveRight_003.png") ),
-                            ImageIO.read( new File("resources/player/move_right/Player_MoveRight_004.png") ),
-                            ImageIO.read( new File("resources/player/move_right/Player_MoveRight_005.png") ),
-                            ImageIO.read( new File("resources/player/move_right/Player_MoveRight_006.png") ),
-                            ImageIO.read( new File("resources/player/move_right/Player_MoveRight_007.png") )})
-            );*/
+            entityAnimations.put(EntityType.PLAYER,new HashMap<>());
+            entityAnimations.get(EntityType.PLAYER).put(Animation.MOVE_EAST, new BufferedImage[]{
+                    ImageIO.read( new File("resources/player/move_right/player0.png") ),
+                    ImageIO.read( new File("resources/player/move_right/player1.png") ),
+                    ImageIO.read( new File("resources/player/move_right/player2.png") ),
+                    ImageIO.read( new File("resources/player/move_right/player3.png") )});
+            entityAnimations.get(EntityType.PLAYER).put(Animation.MOVE_WEST, new BufferedImage[]{
+                    ImageIO.read( new File("resources/player/move_left/player0.png") ),
+                    ImageIO.read( new File("resources/player/move_left/player1.png") ),
+                    ImageIO.read( new File("resources/player/move_left/player2.png") ),
+                    ImageIO.read( new File("resources/player/move_left/player3.png") )});
+            entityAnimations.get(EntityType.PLAYER).put(Animation.MOVE_NORTH, new BufferedImage[]{
+                    ImageIO.read( new File("resources/player/move_forward/player0.png") ),
+                    ImageIO.read( new File("resources/player/move_forward/player1.png") ),
+                    ImageIO.read( new File("resources/player/move_forward/player2.png") ),
+                    ImageIO.read( new File("resources/player/move_forward/player3.png") )});
+            entityAnimations.get(EntityType.PLAYER).put(Animation.MOVE_SOUTH, new BufferedImage[]{
+                    ImageIO.read( new File("resources/player/move_backward/player1.png") ),
+                    ImageIO.read( new File("resources/player/move_backward/player1.png") ),
+                    ImageIO.read( new File("resources/player/move_backward/player2.png") ),
+                    ImageIO.read( new File("resources/player/move_backward/player3.png") )});
+            entityAnimations.get(EntityType.PLAYER).put(Animation.IDLE, new BufferedImage[]{
+                    ImageIO.read( new File("resources/player/player_Idle.png") )});
+
+            entityAnimations.put(EntityType.ENEMY,new HashMap<>());
+            entityAnimations.get(EntityType.ENEMY).put(Animation.MOVE_EAST, new BufferedImage[]{
+                    ImageIO.read( new File("resources/enemy/move_right/enemy0.png") ),
+                    ImageIO.read( new File("resources/enemy/move_right/enemy1.png") ),
+                    ImageIO.read( new File("resources/enemy/move_right/enemy2.png") ),
+                    ImageIO.read( new File("resources/enemy/move_right/enemy3.png") )});
+            entityAnimations.get(EntityType.ENEMY).put(Animation.MOVE_WEST, new BufferedImage[]{
+                    ImageIO.read( new File("resources/enemy/move_left/enemy0.png") ),
+                    ImageIO.read( new File("resources/enemy/move_left/enemy1.png") ),
+                    ImageIO.read( new File("resources/enemy/move_left/enemy2.png") ),
+                    ImageIO.read( new File("resources/enemy/move_left/enemy3.png") )});
+            entityAnimations.get(EntityType.ENEMY).put(Animation.MOVE_NORTH, new BufferedImage[]{
+                    ImageIO.read( new File("resources/enemy/move_forward/enemy0.png") ),
+                    ImageIO.read( new File("resources/enemy/move_forward/enemy1.png") ),
+                    ImageIO.read( new File("resources/enemy/move_forward/enemy2.png") ),
+                    ImageIO.read( new File("resources/enemy/move_forward/enemy3.png") )});
+            entityAnimations.get(EntityType.ENEMY).put(Animation.MOVE_SOUTH, new BufferedImage[]{
+                    ImageIO.read( new File("resources/enemy/move_backward/enemy0.png") ),
+                    ImageIO.read( new File("resources/enemy/move_backward/enemy1.png") ),
+                    ImageIO.read( new File("resources/enemy/move_backward/enemy2.png") ),
+                    ImageIO.read( new File("resources/enemy/move_backward/enemy3.png") )});
+            entityAnimations.get(EntityType.ENEMY).put(Animation.IDLE, new BufferedImage[]{
+                    ImageIO.read( new File("resources/enemy/enemy_Idle.png") )});
+
+            entityAnimations.put(EntityType.KNIGHT,new HashMap<>());
+            entityAnimations.get(EntityType.KNIGHT).put(Animation.MOVE_EAST, new BufferedImage[]{
+                    ImageIO.read( new File("resources/knight/east/knight0.png") ),
+                    ImageIO.read( new File("resources/knight/east/knight1.png") ),
+                    ImageIO.read( new File("resources/knight/east/knight2.png") ),
+                    ImageIO.read( new File("resources/knight/east/knight3.png") )});
+            entityAnimations.get(EntityType.KNIGHT).put(Animation.MOVE_WEST, new BufferedImage[]{
+                    ImageIO.read( new File("resources/knight/west/knight0.png") ),
+                    ImageIO.read( new File("resources/knight/west/knight1.png") ),
+                    ImageIO.read( new File("resources/knight/west/knight2.png") ),
+                    ImageIO.read( new File("resources/knight/west/knight3.png") )});
+            entityAnimations.get(EntityType.KNIGHT).put(Animation.MOVE_NORTH, new BufferedImage[]{
+                    ImageIO.read( new File("resources/knight/north/knight0.png") ),
+                    ImageIO.read( new File("resources/knight/north/knight1.png") ),
+                    ImageIO.read( new File("resources/knight/north/knight2.png") ),
+                    ImageIO.read( new File("resources/knight/north/knight3.png") )});
+            entityAnimations.get(EntityType.KNIGHT).put(Animation.MOVE_SOUTH, new BufferedImage[]{
+                    ImageIO.read( new File("resources/knight/south/knight0.png") ),
+                    ImageIO.read( new File("resources/knight/south/knight1.png") ),
+                    ImageIO.read( new File("resources/knight/south/knight2.png") ),
+                    ImageIO.read( new File("resources/knight/south/knight3.png") )});
+            entityAnimations.get(EntityType.KNIGHT).put(Animation.IDLE, new BufferedImage[]{
+                    ImageIO.read( new File("resources/knight/knight_Ilde.png") )});
+
+
+
+            entityAnimations.put(EntityType.EXIT,new HashMap<>());
+            entityAnimations.get(EntityType.EXIT).put(Animation.EXIT,new BufferedImage[]{
+                    ImageIO.read( new File("resources/object/exit/exit0.png") ),
+                    ImageIO.read( new File("resources/object/exit/exit1.png") ),
+                    ImageIO.read( new File("resources/object/exit/exit2.png") ),
+                    ImageIO.read( new File("resources/object/exit/exit3.png") ),
+                    ImageIO.read( new File("resources/object/exit/exit4.png") ),
+                    ImageIO.read( new File("resources/object/exit/exit5.png") )
+            });
+
+            entityAnimations.put(EntityType.HURT,new HashMap<>());
+            entityAnimations.get(EntityType.HURT).put(Animation.HURT,new BufferedImage[]{
+                    ImageIO.read( new File("resources/object/hurt/hurt0.png") ),
+                    ImageIO.read( new File("resources/object/hurt/hurt1.png") ),
+                    ImageIO.read( new File("resources/object/hurt/hurt2.png") ),
+                    ImageIO.read( new File("resources/object/hurt/hurt3.png") ),
+                    ImageIO.read( new File("resources/object/hurt/hurt4.png") ),
+                    ImageIO.read( new File("resources/object/hurt/hurt5.png") )
+            });
+
+            entityAnimations.put(EntityType.EXPLOSION,new HashMap<>());
+            entityAnimations.get(EntityType.EXPLOSION).put(Animation.EXPLOSION,new BufferedImage[]{
+                    ImageIO.read( new File("resources/object/explosion/flam0.png") ),
+                    ImageIO.read( new File("resources/object/explosion/flam1.png") ),
+                    ImageIO.read( new File("resources/object/explosion/flam2.png") ),
+                    ImageIO.read( new File("resources/object/explosion/flam3.png") ),
+                    ImageIO.read( new File("resources/object/explosion/flam4.png") ),
+                    ImageIO.read( new File("resources/object/explosion/flam5.png") )
+            });
+
+            entityAnimations.put(EntityType.ITEM_DROPPED,new HashMap<>());
+            entityAnimations.get(EntityType.ITEM_DROPPED).put(Animation.ITEM_BOMB,new BufferedImage[]{
+                    ImageIO.read( new File("resources/object/itemBomb/itemBomb0.png") ),
+                    ImageIO.read( new File("resources/object/itemBomb/itemBomb1.png") ),
+                    ImageIO.read( new File("resources/object/itemBomb/itemBomb2.png") ),
+                    ImageIO.read( new File("resources/object/itemBomb/itemBomb3.png") ),
+                    ImageIO.read( new File("resources/object/itemBomb/itemBomb4.png") ),
+                    ImageIO.read( new File("resources/object/itemBomb/itemBomb5.png") ),
+                    ImageIO.read( new File("resources/object/itemBomb/itemBomb6.png") ),
+                    ImageIO.read( new File("resources/object/itemBomb/itemBomb7.png") ),
+                    ImageIO.read( new File("resources/object/itemBomb/itemBomb8.png") ),
+                    ImageIO.read( new File("resources/object/itemBomb/itemBomb9.png") )
+            });
+
+            entityAnimations.put(EntityType.BOMB,new HashMap<>());
+            entityAnimations.get(EntityType.BOMB).put(Animation.BOMB,new BufferedImage[]{
+                    ImageIO.read( new File("resources/object/bomb/bomb0.png") ),
+                    ImageIO.read( new File("resources/object/bomb/bomb1.png") ),
+                    ImageIO.read( new File("resources/object/bomb/bomb2.png") ),
+                    ImageIO.read( new File("resources/object/bomb/bomb3.png") ),
+                    ImageIO.read( new File("resources/object/bomb/bomb4.png") ),
+                    ImageIO.read( new File("resources/object/bomb/bomb5.png") )
+            });
+
+
+
+
         }catch(IOException e){
             System.out.println(e.toString());
         }
@@ -64,51 +162,89 @@ public class Container {
 
     private int timeToNextImage; // Number of ms to go the next image
     private long lastAnimationTime;
-    private BufferedImage animation[];
-    boolean continueAnim;
+    private BufferedImage[] animation;
     private int index;
+    private boolean continueAnimation;
 
 
     public Container(){
         index = 0;
         lastAnimationTime = 0;
-        continueAnim = false;
+        continueAnimation=true;
 
+        //set the time of all the animation
+        //thanks to that we can set the time before next image
+    }
+
+    public void init(int animationDuration,Animation animationName,EntityType entityType)
+    {
+        continueAnimation=true;
+        setAnimation(animationName,entityType);
+        setDuration(animationDuration);
     }
 
     // Set the duration for displaying one image of the animation
-    public void setDuration(int moveDurationMs){
-        if(animation.length > 0) timeToNextImage = (int)Math.rint((double)moveDurationMs / (double)(animation.length*10));
-    }
+    private void setDuration(int animationDuration){
+        if(animation.length > 0)
+        {
+            timeToNextImage = (int)Math.rint((double)animationDuration / (double)(animation.length));
+        }else
+            timeToNextImage=0;
 
-    public int getDuration(){
-        return timeToNextImage;
     }
 
     // Select the animation to apply to the entity's container
-    public void setAnimation(Animation animType){
-        animation = globalEntityAnimations.get(animType);
-
+    private void setAnimation(Animation animType, EntityType entityType){
+        index=0;
+        animation = entityAnimations.get(entityType).get(animType);
     }
 
     // Get the next image of the animation
-    public BufferedImage getNextImage()
+    public void nextImage()
     {
-        long now = Instant.now().toEpochMilli();
+        //each turn we call this function
+        lastAnimationTime+=Game.THREAD_SLEEP;
 
-        if(index >= animation.length-1){ // Checks if we reach the end of the array/animation
-            index = 0;
-            continueAnim = false;
+        if(lastAnimationTime>=timeToNextImage) {
+            indexUp();
+            lastAnimationTime = 0;
         }
-        else if(now-lastAnimationTime >=  (long)timeToNextImage && continueAnim){ // Increment index every specific period of time
-            index++;
-            lastAnimationTime = Instant.now().toEpochMilli();
-        }else if(index == 0){ // Checks if we are at the beginning of the animation
-            continueAnim = true;
-        }
-
-        return animation[index];
     }
 
+    private void indexUp()
+    {
+        if(animation!=null&& index<animation.length-1 && continueAnimation)
+        {
+            index++;
+        }
+        else
+        {
+            index=0;
+        }
+    }
 
+    public BufferedImage getCurrentImage()
+    {
+        if(animation!=null)
+            return animation[index];
+        else return null;
+    }
+
+    public void play()
+    {
+        continueAnimation=true;
+    }
+
+    public void stopAnimation()
+    {
+        continueAnimation=false;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public boolean isContinueAnimation() {
+        return continueAnimation;
+    }
 }

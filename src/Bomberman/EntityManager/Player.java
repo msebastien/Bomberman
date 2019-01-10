@@ -1,45 +1,55 @@
 package Bomberman.EntityManager;
 
-import Bomberman.Animation;
-import Bomberman.Direction;
-import Bomberman.Main;
-import Bomberman.Randomator;
-import Bomberman.Tile;
-import Bomberman.Game;
+import Bomberman.*;
 
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
-
 
 public class Player extends MovingEntity implements KeyListener
 {
+    private final static String[] keySchema=new String[]{"o","+","x"};
+    private final static Map<String,List<Point>> DifferentTypeExplosion= new HashMap<>();
+    static {
+        DifferentTypeExplosion.put("o", Arrays.asList(new Point(2,1),new Point(1,2),new Point(-2,1),new Point(1,-2),new Point(-2,-1)
+                ,new Point(-1,-2),new Point(2,-1),new Point(-1,2)));
+
+        DifferentTypeExplosion.put("+",Arrays.asList(new Point(0,0),new Point(0,-1),new Point(-1,0),new Point(0,1),new Point(1,0)));
+        DifferentTypeExplosion.put("x",Arrays.asList(new Point(0,0),new Point(-1,-1),new Point(-1,1),new Point(1,-1),new Point(1,1)));
+    }
+    /*Arrays.asList(
+            Arrays.asList(new Point(0,0),new Point(-1,-1),new Point(-1,1),new Point(1,-1),new Point(1,1)),
+            Arrays.asList(new Point(0,0),new Point(0,-1),new Point(-1,0),new Point(0,1),new Point(1,0)),
+            Arrays.asList(new Point(2,1),new Point(1,2),new Point(-2,1),new Point(1,-2),new Point(-2,-1)
+                    ,new Point(-1,-2),new Point(2,-1),new Point(-1,2)));*/
+
 
     //contain the future direction (chose with a key pressed)
-    private Point futureDirection;
     private AtomicBoolean isThrowingBomb;
     private int bombReserve;
     private Point futurePosBomb;
+    private int indexExplosion;
 
     public Player(int moveDuration){
         super(moveDuration);
-
         futurePosBomb=new Point();
         isThrowingBomb=new AtomicBoolean(false);
-
-        // init container for animations
-        container.setAnimation(Animation.PLAYER_IDLE);
-        container.setDuration(moveDuration); // Set duration of the animation based on the movement of the entity
+        entityType=EntityType.PLAYER;
+        indexExplosion=0;
     }
 
-    @Override
     public void init(Point posInArrayMap) {
         super.init(posInArrayMap);
         isThrowingBomb.set(false);
         bombReserve=Game.nbrBombInitReserve;
         directionMovement= Direction.IDLE.getDirection();
-        futureDirection=Direction.IDLE.getDirection();
+        direction =Direction.IDLE;
+        container.init(moveDuration,Animation.IDLE,entityType);
 
     }
 
@@ -48,7 +58,9 @@ public class Player extends MovingEntity implements KeyListener
         boolean res= super.isMoveBegin();
         if(res)
         {
-            directionMovement=futureDirection;
+            directionMovement=direction.getDirection();
+            Animation animation=translateDirectionToAnimation();
+            container.init(moveDuration,animation,entityType);
         }
         return res ;
     }
@@ -57,6 +69,7 @@ public class Player extends MovingEntity implements KeyListener
     @Override
     public void changeDirection() {
         directionMovement= Direction.IDLE.getDirection();
+        container.stopAnimation();
     }
 
 
@@ -71,23 +84,38 @@ public class Player extends MovingEntity implements KeyListener
             Tile tile=Main.game.getMap().getTile(directionExplosion);
             if(tile.isFree())
             {
-                Bomb bomb=new Bomb(directionExplosion,4000, Randomator.getRandomElementIn(Bomb.DifferentTypeExplosion));
+                Bomb bomb=new Bomb(directionExplosion,Game.COUNT_DOWN_BOMB, getCurrentSchema());
                 tile.setEntity(bomb);
                 Main.game.getMap().getEntitiesList().add(bomb);
+                bombReserve--;
             }
         }
+    }
+
+    private void nextSchemaExplosion()
+    {
+        indexExplosion++;
+        if(indexExplosion>=keySchema.length)indexExplosion=0;
+    }
+
+    private List<Point> getCurrentSchema()
+    {
+        return DifferentTypeExplosion.get(keySchema[indexExplosion]);
+    }
+
+    public String getCurrentSchemaKey()
+    {
+        return keySchema[indexExplosion];
     }
 
     @Override
     public void action() {
         super.action();
 
-        //System.out.println(this+"\n\t>"+directionMovement.toString());
         if(isThrowingBomb.get()&&bombReserve>0)
         {
             isThrowingBomb.set(false);
             placeBomb();
-            bombReserve--;
         }
     }
 
@@ -115,21 +143,23 @@ public class Player extends MovingEntity implements KeyListener
         switch (keyEvent.getKeyCode())
         {
             case KeyEvent.VK_LEFT:
-                futureDirection=Direction.WEST.getDirection();
-                container.setAnimation(Animation.PLAYER_MOVE_LEFT);
+                direction =Direction.WEST;
                 break;
             case KeyEvent.VK_RIGHT:
-                futureDirection=Direction.EAST.getDirection();
-                container.setAnimation(Animation.PLAYER_MOVE_RIGHT);
+                direction =Direction.EAST;
                 break;
             case KeyEvent.VK_UP:
-                futureDirection=Direction.NORTH.getDirection();
+                direction =Direction.NORTH;
                 break;
             case KeyEvent.VK_DOWN:
-                futureDirection=Direction.SOUTH.getDirection();
+                direction =Direction.SOUTH;
                 break;
 
-                //Bomb management
+            case KeyEvent.VK_SPACE:
+                nextSchemaExplosion();
+                break;
+
+                //gestion bombe
             case KeyEvent.VK_Q:
                 futurePosBomb=Direction.WEST.getDirection();
                 isThrowingBomb.set(true);
@@ -157,8 +187,7 @@ public class Player extends MovingEntity implements KeyListener
             case KeyEvent.VK_RIGHT:
             case KeyEvent.VK_UP:
             case KeyEvent.VK_DOWN:
-                futureDirection=Direction.IDLE.getDirection();
-                container.setAnimation(Animation.PLAYER_IDLE);
+                direction =Direction.IDLE;
         }
     }
 }

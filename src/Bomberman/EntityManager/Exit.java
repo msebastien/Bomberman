@@ -1,11 +1,17 @@
 package Bomberman.EntityManager;
 
 
+import Bomberman.Animation;
 import Bomberman.IssueGame;
 import Bomberman.Main;
 
 public class Exit extends Entity {
 
+    public Exit() {
+        super();
+        entityType=EntityType.EXIT;
+        container.init(Animation.DURATION_ANIMATION_EXIT,Animation.EXIT,entityType);
+    }
 
     @Override
     public void actionOnCollision(Entity entity) {
@@ -18,10 +24,4 @@ public class Exit extends Entity {
         //we don't care because this is not a movingentity ,so we never save this returned value
     }
 
-    @Override
-    //TODO Don't know what to do with the exit each turn , maybe increment something to decrement the point or maybe the
-    //time of the game ...if the time is short , you win more point
-    public void action() {
-
-    }
 }

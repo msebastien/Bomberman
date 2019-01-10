@@ -3,27 +3,30 @@ package Bomberman.EntityManager;
 import Bomberman.*;
 
 import java.awt.Point;
+import java.util.HashMap;
 
 public abstract class MovingEntity extends Bomberman.EntityManager.Entity
 {
+
+
+
     protected Point directionMovement;
     protected Point constPixelMovement;
+    protected Direction direction;
+    protected int moveDuration;
 
     //just used to a create a player without parameter
     public MovingEntity(int moveDurationMs) {
         super();
+        this.moveDuration=moveDurationMs;
         int pixelWidth= (int) Math.rint(((float)Map.WIDTH_TILE)/((float)moveDurationMs/(float)Game.THREAD_SLEEP));
         int pixelHeight=(int) Math.rint(((float)Map.WIDTH_TILE)/((float)moveDurationMs/(float)Game.THREAD_SLEEP));
 
         constPixelMovement=new Point(pixelWidth,pixelHeight);
-    }
-
-
-    @Override
-    public void init(Point posInArrayMap) {
-        super.init(posInArrayMap);
 
     }
+
+
 
     /**
      * this function solve the effect of a collision with an other entity, win the game if we enter in the exit
@@ -69,6 +72,13 @@ public abstract class MovingEntity extends Bomberman.EntityManager.Entity
 
     @Override
     public void action() {
+        super.action();
+
+        move();
+    }
+
+    private void move()
+    {
         if(isMoveBegin())
         {
             posInPixelMap.setLocation(posInArrayMap.x* Map.WIDTH_TILE,posInArrayMap.y*Map.HEIGHT_TILE);
@@ -104,9 +114,42 @@ public abstract class MovingEntity extends Bomberman.EntityManager.Entity
         //he translates himself forward with his direction
         translatePixelEntity();
     }
+    
 
+    @Override
+    public void init(Point posInArrayMap) {
+        super.init(posInArrayMap);
+        //this.oldPosInArrayMap=new Point(posInArrayMap);
+    }
 
 
 
     public abstract void changeDirection();
+
+
+
+    protected Animation translateDirectionToAnimation()
+    {
+        Animation animation=null;
+        switch(direction)
+        {
+            case NORTH:
+                animation=Animation.MOVE_NORTH;
+                break;
+            case WEST:
+                animation=Animation.MOVE_WEST;
+                break;
+            case EAST:
+                animation=Animation.MOVE_EAST;
+                break;
+            case SOUTH:
+                animation=Animation.MOVE_SOUTH;
+                break;
+            case IDLE:
+                animation=Animation.IDLE;
+                break;
+        }
+
+        return animation;
+    }
 }

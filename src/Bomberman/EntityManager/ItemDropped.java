@@ -1,5 +1,6 @@
 package Bomberman.EntityManager;
 
+import Bomberman.Animation;
 import Bomberman.Main;
 
 import java.awt.*;
@@ -8,11 +9,8 @@ public class ItemDropped extends Entity{
 
     public ItemDropped(Point posInArrayMap) {
         super(posInArrayMap);
-    }
-
-    @Override
-    public void action() {
-
+        entityType=EntityType.ITEM_DROPPED;
+        container.init(Animation.DURATION_ANIMATION_ITEM,Animation.ITEM_BOMB,entityType);
     }
 
     @Override
@@ -20,7 +18,7 @@ public class ItemDropped extends Entity{
         if(entity.getClass()==Player.class)
         {
             ((Player)entity).addBombToReserve();
-            Main.game.getMap().deleteFromMap(this);
+            Main.game.getMap().deleteFromAll(this);
         }
     }
 }

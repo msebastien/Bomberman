@@ -21,6 +21,7 @@ public class Scene extends JPanel  {
 
             printAllMap(g);
 
+
             /*//now we print all the backgrounf of the current entities in the map
             Main.game.getMap().getEntitiesList().forEach(entity-> {
 
@@ -36,21 +37,24 @@ public class Scene extends JPanel  {
             });*/
 
             Main.game.getMap().getEntitiesList().forEach(entity-> {
+                //we paint the entity itself
 
-                if (entity.getClass() == Enemy.class) g.setColor(Color.RED);
-                else if (entity.getClass() == Exit.class) g.setColor(Color.MAGENTA);
-                else if (entity.getClass() == Bomb.class) g.setColor(Color.CYAN);
-                else if(entity.getClass()== Explosion.class) g.setColor(Color.ORANGE);
-                else if(entity.getClass()== ItemDropped.class) g.setColor(Color.WHITE);
-                else g.setColor(Color.BLUE);
+                //if the entity is dead , we can't paint it because we want to hide it one last time with the previous
+                //operation when we printed the background
+                //if(entity.isAlive()) {
 
-                if(entity.getClass() == Player.class){
-                    g.drawImage(entity.getContainer().getNextImage(), entity.getPosInPixelMap().x, entity.getPosInPixelMap().y, Map.WIDTH_TILE, Map.HEIGHT_TILE, null);
-                } else {
-                    g.fillRect(entity.getPosInPixelMap().x, entity.getPosInPixelMap().y, Map.WIDTH_TILE, Map.HEIGHT_TILE);
-                }
+
+
+
+
+                g.drawImage(entity.getContainer().getCurrentImage(), entity.getPosInPixelMap().x, entity.getPosInPixelMap().y, Map.WIDTH_TILE, Map.HEIGHT_TILE, null);
+
+                //}
 
             });
+
+            //now we painted one last time the dead entities we can delete them
+            //Main.game.getMap().deleteDeadEntities();
 
         }
     }
@@ -59,18 +63,12 @@ public class Scene extends JPanel  {
     private void printAllMap(Graphics g)
     {
         //we watch each tile and print them
+        Map map=Main.game.getMap();
         for(int i=0;i<Map.MAP_SIZE_X;i++)
         {
             for (int j=0;j<Map.MAP_SIZE_Y;j++)
             {
-                if(Main.game.getMap().getTile(i,j).getTileType().equals(TileType.GRASS))
-                {
-                    g.setColor(Color.GREEN);
-                }
-                else{
-                    g.setColor(Color.GRAY);
-                }
-                g.fillRect(i*Map.WIDTH_TILE,j*Map.HEIGHT_TILE,Map.WIDTH_TILE,Map.HEIGHT_TILE);
+                g.drawImage(map.getTile(i,j).getTileType().getImage(),i*Map.WIDTH_TILE, j*Map.HEIGHT_TILE, Map.WIDTH_TILE, Map.HEIGHT_TILE, null);
             }
         }
     }

@@ -14,15 +14,10 @@ public class Map {
     public static int WIDTH_TILE;
 
     private Tile[][] map;
-
     //contain all the current entities
     private Vector<Entity> entitiesList;
-
     //a reference to player;
     Player player;
-
-    // Graph
-    Graph graph;
 
     private boolean isMapGenerated=false;
     private final int PROBA_GENERATION_MAP=77;
@@ -98,13 +93,15 @@ public class Map {
 
         //insert enemy
         Enemy enemy;
+        Enemy copyEnemy;
 
         int nbrEnemy=0;
         if(!listOfFreeTile.isEmpty())nbrEnemy=(int)(Game.nbrEnemy *listOfFreeTile.size());
 
         while(i<nbrEnemy && !listOfFreeTile.isEmpty())
         {
-            enemy=new Enemy(Game.speedEnemy);
+            copyEnemy=Randomator.getRandomElementIn(Enemy.ListEnemy);
+            enemy=new Enemy(copyEnemy);
             insertEntityInMap(enemy,listOfFreeTile);
             i++;
         }
@@ -113,11 +110,7 @@ public class Map {
         Exit exit=new Exit();
         insertEntityInMap(exit,listOfFreeTile);
 
-/*
-        scene.setFocusable(true);
-        scene.requestFocus();
-        scene.addKeyListener(player);
-*/
+
 
         isMapGenerated=true;
     }
@@ -188,24 +181,29 @@ public class Map {
         return point.x>=0&&point.y>=0 && point.x<MAP_SIZE_X && point.y<MAP_SIZE_Y;
     }
 
-    public boolean isInsideMap(int x,int y)
-    {
-        return x>=0&&y>=0 && x<MAP_SIZE_X && y<MAP_SIZE_Y;
-    }
 
     public synchronized List<Entity> getEntitiesList() {
         return entitiesList;
     }
 
 
-    public void deleteFromMap(Entity entity)
+    public void deleteFromAll(Entity entity)
     {
         if(entity!=null)
         {
-            //entity.destroy();
             entitiesList.remove(entity);
             map[entity.getPosInArrayMap().x][entity.getPosInArrayMap().y].setEntity(null);
         }
+    }
+
+    public void deleteFromListEntitites(Entity entity)
+    {
+        entitiesList.remove(entity);
+    }
+
+    public void deleteFromMapArray(Entity entity)
+    {
+        map[entity.getPosInArrayMap().x][entity.getPosInArrayMap().y].setEntity(null);
     }
 
     public void addToMap(Entity entity)

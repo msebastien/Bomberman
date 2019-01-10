@@ -4,18 +4,34 @@ import Bomberman.*;
 
 
 import java.awt.Point;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
+import java.util.Map;
 
 
 public class Enemy extends MovingEntity implements ActionOnDisappearance
 {
 
+    public static final List<Enemy> ListEnemy= Arrays.asList(
+            new Enemy(Game.speedEnemy,EntityType.KNIGHT,2),
+            new Enemy(Game.speedEnemy,EntityType.ENEMY,1));
 
+    private int nbrPv;
 
-    public Enemy(int moveDuration) {
-        super(moveDuration);
-        directionMovement= Randomator.getRandomElementIn(Direction.directionList).getDirection();
+    private Enemy(int moveDurationMs,EntityType entityType, int nbrPv) {
+        super(moveDurationMs);
+        this.entityType=entityType;
+        this.nbrPv = nbrPv;
+    }
+
+    public Enemy(Enemy enemyCopy) {
+        super(enemyCopy.moveDuration);
+        nbrPv=enemyCopy.nbrPv;
+        direction=Randomator.getRandomElementIn(Direction.directionList);
+        directionMovement= direction.getDirection();
+        this.entityType=enemyCopy.entityType;
+
+        Animation animation=translateDirectionToAnimation();
+        container.init(moveDuration,animation,entityType);
     }
 
 
@@ -33,7 +49,6 @@ public class Enemy extends MovingEntity implements ActionOnDisappearance
 
     public void changeDirection() {
         List<Direction> listPossibleExit=new LinkedList<>();
-
         Point testPoint=new Point();
         for(int i=0;i< Direction.directionList.size();i++)
         {
@@ -46,13 +61,26 @@ public class Enemy extends MovingEntity implements ActionOnDisappearance
             }
         }
 
-        if(listPossibleExit.size()>0)
-            directionMovement= Randomator.getRandomElementIn(listPossibleExit).getDirection();
+        if(listPossibleExit.size()>0) {
+            direction=Randomator.getRandomElementIn(listPossibleExit);
+        }
         else
             //like that the entity will not move next time and wait for an exit
-            directionMovement=Direction.IDLE.getDirection();
-
+        {
+            direction=Direction.IDLE;
+        }
+        Animation animation=translateDirectionToAnimation();
+        container.init(moveDuration,animation,entityType);
+        directionMovement=direction.getDirection();
     }
+
+    public boolean hurt(int damage)
+    {
+        nbrPv-=damage;
+        return(nbrPv<=0);
+    }
+
+
 
     @Override
     public void actionOnDisappearance() {

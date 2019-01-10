@@ -1,6 +1,8 @@
 package Bomberman;
 
 
+import Bomberman.EntityManager.Player;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -15,6 +17,7 @@ public class Window extends JFrame  {
     private JButton buttonBeginGame;
     private JLabel currentBombNumber;
     private JLabel currentLevel;
+    private JLabel currentSchemaExplosion;
     private JLabel textEndGame;
     //private JPanel baseJPanel;
     private CardLayout menuGestion;
@@ -40,17 +43,25 @@ public class Window extends JFrame  {
         hud=new JPanel();
         hud.setLayout(new BoxLayout(hud,BoxLayout.PAGE_AXIS));
 
+        JLabel titleCurrentLevel=new JLabel("Level");
+        setBasicProperty(titleCurrentLevel,Color.BLACK,hud);
+
+        currentLevel=new JLabel("...");
+        setBasicProperty(currentLevel,Color.RED,hud);
+
         JLabel titleNbrBomb=new JLabel("Nombre de Bombes");
         setBasicProperty(titleNbrBomb,Color.BLACK,hud);
 
         currentBombNumber=new JLabel("...");
         setBasicProperty(currentBombNumber,Color.RED,hud);
 
-        JLabel titleCurrentLevel=new JLabel("Level");
-        setBasicProperty(titleCurrentLevel,Color.BLACK,hud);
+        JLabel titleTypeSchema=new JLabel("Type Explosion");
+        setBasicProperty(titleTypeSchema,Color.BLACK,hud);
 
-        currentLevel=new JLabel("...");
-        setBasicProperty(currentLevel,Color.RED,hud);
+        currentSchemaExplosion=new JLabel("...");
+        setBasicProperty(currentSchemaExplosion,Color.RED,hud,30);
+
+
 
         JPanel printGame=new JPanel();
         printGame.setLayout(new BorderLayout());
@@ -94,10 +105,11 @@ public class Window extends JFrame  {
         this.pack();
     }
 
-    public void updateHUD(int nbrBomb)
+    public void updateHUD(Player player)
     {
         currentLevel.setText(Integer.toString(Main.game.getLevel()));
-        currentBombNumber.setText(Integer.toString(nbrBomb));
+        currentBombNumber.setText(Integer.toString(player.getBombReserve()));
+        currentSchemaExplosion.setText(player.getCurrentSchemaKey());
     }
 
     public void showMenuEndGame(IssueGame issueGame)
@@ -130,6 +142,16 @@ public class Window extends JFrame  {
     private void setBasicProperty(JComponent composant,Color foregroundColor,JPanel jPanel)
     {
         composant.setFont(new Font("Arial",Font.PLAIN,20));
+        composant.setForeground(foregroundColor);
+        composant.setAlignmentX(Component.CENTER_ALIGNMENT);
+        composant.setAlignmentY(Component.CENTER_ALIGNMENT);
+
+        jPanel.add(composant);
+    }
+
+    private void setBasicProperty(JComponent composant,Color foregroundColor,JPanel jPanel,int Size)
+    {
+        composant.setFont(new Font("Arial",Font.PLAIN,Size));
         composant.setForeground(foregroundColor);
         composant.setAlignmentX(Component.CENTER_ALIGNMENT);
         composant.setAlignmentY(Component.CENTER_ALIGNMENT);
