@@ -7,8 +7,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Map {
-    static final int MAP_SIZE_X = 20; // Modify values if needed
-    static final int MAP_SIZE_Y = 20;
+    public static final int MAP_SIZE_X = 20; // Modify values if needed
+    public static final int MAP_SIZE_Y = 20;
 
     public static int HEIGHT_TILE;
     public static int WIDTH_TILE;

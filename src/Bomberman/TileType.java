@@ -20,6 +20,9 @@ public class TileType {
 
     }
 
+    public Animation getType() {
+        return typeBackground;
+    }
 
     public Animation getTypeBackground() {
         return typeBackground;

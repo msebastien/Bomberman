@@ -1,12 +1,12 @@
 package Bomberman.Pathfinding;
 
-import Bomberman.Game;
-import Bomberman.Main;
+import Bomberman.*;
 import Bomberman.Map;
-import Bomberman.TileType;
 
 import java.awt.Point;
 import java.util.*;
+
+import static Bomberman.Animation.*;
 //import java.util.Map;
 
 public class Graph {
@@ -19,7 +19,7 @@ public class Graph {
     Graph(){
         pathList = new ArrayList<>();
         evaluatedNodes = new ArrayList<>();
-        mapSize = Main.game.getMap().getMapSize();
+        mapSize = Map.MAP_SIZE_X;
         tileGraph = new Node[mapSize][mapSize]; // Graph must be a square matrix (adjacency matrix)
         this.costBetweenNodes = 10;
     }
@@ -46,7 +46,7 @@ public class Graph {
                 tileGraph[y][x] = new Node(new Point(y, x));
 
                 // Checks if the tile is an obstacle
-                if(Main.game.getMap().getTile(y, x).getTileType() != TileType.OBSTACLE){
+                if(Main.game.getMap().getTile(y, x).getTileType().getType() != OBSTACLE){
                     Point playerPos = Main.game.getMap().getPlayer().getPosInArrayMap();
                     tileGraph[y][x].setHeuristicValue( Math.abs(y - playerPos.y) + Math.abs(x - playerPos.x));
                 }else{
@@ -171,7 +171,7 @@ public class Graph {
                         && !evaluatedNodes.contains(tileGraph[n.getCoord().x + 1][n.getCoord().y])) {
 
                     // Compute Cost
-                    int totalCost = n.getHeuristicValue() + n.getCost() + costBetweenNodes; // Cost of previous node + Cost of the move to the next node
+                    int totalCost = n.getHeuristicValue() + n.getCost() + costBetweenNodes; // Cost of previous node ( + Cost of the move to the next node (edge)
                     tileGraph[n.getCoord().x + 1][n.getCoord().y].setCost(costBetweenNodes);
                     int cost = tileGraph[n.getCoord().x + 1][n.getCoord().y].getHeuristicValue() + totalCost;
 
