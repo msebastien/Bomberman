@@ -2,6 +2,7 @@ package Bomberman;
 
 import Bomberman.EntityManager.Entity;
 import Bomberman.EntityManager.EntityType;
+import Bomberman.EntityManager.
 
 import javax.imageio.ImageIO;
 import java.io.File;
