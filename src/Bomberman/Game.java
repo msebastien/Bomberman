@@ -1,6 +1,7 @@
 package Bomberman;
 
 
+import Bomberman.EntityManager.Vitesse;
 
 public class Game {
 
@@ -12,21 +13,24 @@ public class Game {
     private int level;
 
     private final float NBR_ENEMY_LEVEL_0 =0.02f;
-    private final float INC_ENEMY=0.01f;//each level we add this prct of enemy
+    private final float INC_ENEMY=0.0005f;//each level we add this prct of enemy
     public static float nbrEnemy;
 
-
-    private final int SPEED_ENEMY_LEVEL_0 =700;
-    private final int INC_SPPED_ENEMY=10;//each level we add this amount of milliseconds for an enemy move
-    public static int speedEnemy;
-
-    private final int LIFE_ENEMY_LEVEL_0=1;
+    private final int LIFE_PLAYER_LEVEL_0=1;
+    public static int lifePLayer;
 
     private final int NUMBER_BOMB_LEVEL_0 =3;
     private final int INC_NUMBER_BOMB=1;//each level we add this amount of bomb to the player's stack
     public static int nbrBombInitReserve;
 
-    public final static int COUNT_DOWN_BOMB=3000;
+    //un boss tous les combiens de niveaux
+    public final static int FRQCY_BOSS=10;
+
+    public final static int PLAYER_RANGE_LEVEL_0=1;
+    public final static int PLAYER_DAMAGE_LEVEL_0=1;
+    public final static Vitesse PLAYER_SPEED=Vitesse.MOYEN;
+    public final static int COUNT_DOWN_BOMB=2500;
+    public final static int COUNT_DOWN_INVINCIBLE_TIME=1000;
 
     /**************/
 
@@ -43,7 +47,7 @@ public class Game {
     //implement onKey listener to skip to the next level when isRunnig=false
     public Game(Scene scene,Window window)
     {
-        level=0;
+        level=30;
         this.window=window;
         this.scene=scene;
 
@@ -62,15 +66,15 @@ public class Game {
         /*
         Create the param for the actual level
          */
+        lifePLayer=level/5+LIFE_PLAYER_LEVEL_0;
+
         nbrEnemy=level*INC_ENEMY+ NBR_ENEMY_LEVEL_0;
-        nbrBombInitReserve=level*INC_NUMBER_BOMB+ NUMBER_BOMB_LEVEL_0;
-        speedEnemy =-(level*INC_SPPED_ENEMY)+ SPEED_ENEMY_LEVEL_0;//on met un signe moins car il faut diminuer la duree
-        if(speedEnemy<=0)speedEnemy=5;//on s'assure que les ennemis se déplacent dans tous les cas
-        //du mouvement pour qu'ils aillent plus vite
+        nbrBombInitReserve=level*INC_NUMBER_BOMB+NUMBER_BOMB_LEVEL_0;
 
 
         isRunning=true;
-        map.init();
+        map.init(level);
+        window.getHud().initBackground(map.getBiome());
         scene.setFocusable(true);
         scene.requestFocus();
     }
@@ -103,7 +107,6 @@ public class Game {
 
             while(true)
             {
-
                 if(isRunning)
                 {
                     //all of the entity do their action
@@ -115,9 +118,7 @@ public class Game {
                         map.getEntitiesList().get(i).action();
                         //}
                     }
-
                     window.updateHUD(map.getPlayer());
-
                 }
 
                 scene.repaint();

@@ -1,6 +1,7 @@
 package Bomberman;
 
 import Bomberman.EntityManager.Entity;
+import Bomberman.EntityManager.EntityType;
 
 public class Tile {
     private Entity entity;
@@ -8,9 +9,9 @@ public class Tile {
 
 
 
-    public Tile(TileType type) // Constructor
+    public Tile(Animation type, EntityType biome) // Constructor
     {
-        this.type=type;
+        this.type=new TileType(type,biome);
     }
 
     public Entity getEntity()
@@ -28,12 +29,16 @@ public class Tile {
         return type;
     }
 
-    public void setTileType(TileType type) {
-        this.type = type;
+    public void setTileType(Animation typeBackground,EntityType biome) {
+        this.type = new TileType(typeBackground,biome);
     }
 
     public Boolean isFree(){
-        return type==TileType.GRASS && entity==null;
+        return type.getTypeBackground()==Animation.GRASS && entity==null;
+    }
+
+    public boolean isWay(){
+        return type.getTypeBackground()==Animation.GRASS;
     }
 
     public boolean hasEntity(){

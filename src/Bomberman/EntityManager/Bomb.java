@@ -18,13 +18,13 @@ public class Bomb extends TemporaryEntity {
 
     private List<Point> schemaExplosion;
     private int damage;
+    private int range;
 
-    public Bomb(Point posInArrayMap,int countDown,List<Point> schemaExplosion) {
+    public Bomb(Point posInArrayMap,int countDown,List<Point> schemaExplosion,int damage,int range) {
         super(posInArrayMap,countDown,Animation.BOMB,EntityType.BOMB);
-        damage=1;
+        this.damage=damage;
+        this.range=range;
         this.schemaExplosion=schemaExplosion;
-
-
     }
 
     @Override
@@ -36,49 +36,40 @@ public class Bomb extends TemporaryEntity {
 
         //we calculate the coordinate of all points with an explosion
         Point impactPoint=new Point();
-        schemaExplosion.forEach(point->{
-            impactPoint.setLocation(posInArrayMap);
-            impactPoint.translate(point.x,point.y);
 
-            if(map.isInsideMap(impactPoint))
-            {
-                TemporaryEntity explosion=new TemporaryEntity(new Point(impactPoint), Animation.COUNT_DOWN_EXPLOSION,
-                        Animation.EXPLOSION,EntityType.EXPLOSION) {
-                };
-                map.getEntitiesList().add(explosion);
+        //for each range
+        for(int distance=1;distance<=range;distance++)
+        {
+            //for each point of the schema
+            for (int i=0;i<schemaExplosion.size();i++) {
 
-                Tile tile=map.getTile(impactPoint);
-                if(tile.hasEntity())
-                {
+                //si on est sur un range superieur à 1 et qu'on place le point zero on le fait pas
+                //parcequ'il y a deja l'impact du range precedent
+                if(range>1&&schemaExplosion.get(i).x==0&&schemaExplosion.get(i).y==0)continue;
 
-                    if(tile.getEntity() instanceof Enemy)
-                    {
-                        Enemy entity=(Enemy)tile.getEntity();
+                //we calculate the imact point position
+                impactPoint.setLocation(posInArrayMap);
+                impactPoint.translate(schemaExplosion.get(i).x * distance, schemaExplosion.get(i).y*distance);
 
-                        Main.game.getMap().addToMap(new TemporaryEntity(
-                                entity.getPosInArrayMap(),
-                                Animation.DURATION_ANIMATION_HURT,
-                                Animation.HURT,
-                                EntityType.HURT
-                                ));
-                        //do this after put the tile.entity to null because we save the item in this tile
-                        if(entity.hurt(damage))
-                        {
-                            Main.game.getMap().deleteFromAll(entity);
-                            entity.actionOnDisappearance();
-                        }
-                    }else if(tile.getEntity().getClass()==Player.class)
-                    {
-                        Main.game.end(IssueGame.DEFEAT);
+                if (map.isInsideMap(impactPoint)) {
+                    map.addToEntityListOnly(new TemporaryEntity(new Point(impactPoint), Animation.ANIMATION_EXPLOSION,
+                            Animation.EXPLOSION, EntityType.EXPLOSION));
+
+
+                    Tile tile = map.getTile(impactPoint);
+                    if (tile.hasEntity() && tile.getEntity() instanceof MovingEntity) {
+                        ((MovingEntity) tile.getEntity()).hurt(damage);
+
+                    } else if (tile.getTileType().getTypeBackground().equals(Animation.OBSTACLE)) {
+                        tile.setTileType(Animation.GRASS, Main.game.getMap().getBiome());
                     }
-                }else if(tile.getTileType().equals(TileType.OBSTACLE))
-                {
-                    tile.setTileType(TileType.GRASS);
-                }
 
-                //on met pas les explosion dans la carte , seulement dans la liste d'entités
+                    //on met pas les explosion dans la carte , seulement dans la liste d'entités
+                }
             }
-        });
+            //schemaExplosion.forEach(point->{
+            //});
+        }
 
         Main.game.getMap().deleteFromAll(this);
 

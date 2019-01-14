@@ -13,10 +13,13 @@ public class Window extends JFrame  {
 
     //pour avoir la bonne taille de JPanel
 
-    private JPanel hud;
+    private Hud hud;
     private JButton buttonBeginGame;
     private JLabel currentBombNumber;
     private JLabel currentLevel;
+    private JLabel currentLife;
+    private JLabel currentDamage;
+    private JLabel currentRange;
     private JLabel currentSchemaExplosion;
     private JLabel textEndGame;
     //private JPanel baseJPanel;
@@ -40,28 +43,45 @@ public class Window extends JFrame  {
         /*
         Creation des layouts du jeu
          */
-        hud=new JPanel();
+        hud=new Hud();
+        hud.setPreferredSize(new Dimension(200,scene.getPreferredSize().height));
         hud.setLayout(new BoxLayout(hud,BoxLayout.PAGE_AXIS));
 
-        JLabel titleCurrentLevel=new JLabel("Level");
-        setBasicProperty(titleCurrentLevel,Color.BLACK,hud);
+        //JLabel titleCurrentLevel=new JLabel("Level");
+        //setBasicProperty(titleCurrentLevel,Color.BLACK,hud);
 
         currentLevel=new JLabel("...");
         setBasicProperty(currentLevel,Color.RED,hud);
 
-        JLabel titleNbrBomb=new JLabel("Nombre de Bombes");
-        setBasicProperty(titleNbrBomb,Color.BLACK,hud);
+        //JLabel titleNbrBomb=new JLabel("Nombre de Bombes");
+        //setBasicProperty(titleNbrBomb,Color.BLACK,hud);
 
         currentBombNumber=new JLabel("...");
         setBasicProperty(currentBombNumber,Color.RED,hud);
 
-        JLabel titleTypeSchema=new JLabel("Type Explosion");
-        setBasicProperty(titleTypeSchema,Color.BLACK,hud);
+        //JLabel titleTypeSchema=new JLabel("Type Explosion");
+        //setBasicProperty(titleTypeSchema,Color.BLACK,hud);
 
         currentSchemaExplosion=new JLabel("...");
-        setBasicProperty(currentSchemaExplosion,Color.RED,hud,30);
+        setBasicProperty(currentSchemaExplosion,Color.RED,hud);
 
+        //JLabel titleCurrentLife=new JLabel("Health Point");
+        //setBasicProperty(titleCurrentLife,Color.BLACK,hud);
 
+        currentLife=new JLabel("...");
+        setBasicProperty(currentLife,Color.RED,hud);
+
+        //JLabel titleCurrentDamage=new JLabel("Damage");
+        //setBasicProperty(titleCurrentDamage,Color.BLACK,hud);
+
+        currentDamage=new JLabel("...");
+        setBasicProperty(currentDamage,Color.RED,hud);
+
+        //JLabel titleCurrentRange=new JLabel("Range");
+        //setBasicProperty(titleCurrentRange,Color.BLACK,hud);
+
+        currentRange=new JLabel("...");
+        setBasicProperty(currentRange,Color.RED,hud);
 
         JPanel printGame=new JPanel();
         printGame.setLayout(new BorderLayout());
@@ -71,7 +91,8 @@ public class Window extends JFrame  {
         /*
         Creation des layouts du menu Pause
          */
-        JPanel menuPause=new JPanel();
+        //JPanel menuPause=new JPanel();
+        AccueilPanel menuPause=new AccueilPanel();
         menuPause.setLayout(new BoxLayout(menuPause,BoxLayout.PAGE_AXIS));
 
         textEndGame=new JLabel("Fin du Jeu");
@@ -102,14 +123,23 @@ public class Window extends JFrame  {
         this.add(printGame,"printGame");
         this.add(menuPause,"menuPause");
 
+
         this.pack();
+    }
+
+    public Hud getHud() {
+        return hud;
     }
 
     public void updateHUD(Player player)
     {
+        hud.repaint();
         currentLevel.setText(Integer.toString(Main.game.getLevel()));
         currentBombNumber.setText(Integer.toString(player.getBombReserve()));
         currentSchemaExplosion.setText(player.getCurrentSchemaKey());
+        currentLife.setText(Integer.toString(player.getNbrPv()));
+        currentDamage.setText(Integer.toString(player.getDamage()));
+        currentRange.setText(Integer.toString(player.getRange()));
     }
 
     public void showMenuEndGame(IssueGame issueGame)
@@ -146,10 +176,11 @@ public class Window extends JFrame  {
         composant.setAlignmentX(Component.CENTER_ALIGNMENT);
         composant.setAlignmentY(Component.CENTER_ALIGNMENT);
 
+        jPanel.add(Box.createRigidArea(new Dimension(0,20)));
         jPanel.add(composant);
     }
 
-    private void setBasicProperty(JComponent composant,Color foregroundColor,JPanel jPanel,int Size)
+    /*private void setBasicProperty(JComponent composant,Color foregroundColor,JPanel jPanel)
     {
         composant.setFont(new Font("Arial",Font.PLAIN,Size));
         composant.setForeground(foregroundColor);
@@ -157,6 +188,6 @@ public class Window extends JFrame  {
         composant.setAlignmentY(Component.CENTER_ALIGNMENT);
 
         jPanel.add(composant);
-    }
+    }*/
 
 }

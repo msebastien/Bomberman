@@ -16,14 +16,16 @@ public abstract class Entity {
     //check if we can delete the entity from the entity list
     //protected boolean isAlive;
 
-    public Entity(Point posInArrayMap)
+    public Entity(Point posInArrayMap,EntityType entityType)
     {
+        this.entityType=entityType;
         container = new Container();
         init(posInArrayMap);
     }
 
     //just used to call super from moving entity
-    public Entity() {
+    public Entity(EntityType entityType) {
+        this.entityType=entityType;
         container = new Container();
     }
 

@@ -5,25 +5,39 @@ import Bomberman.*;
 import java.awt.Point;
 import java.util.HashMap;
 
-public abstract class MovingEntity extends Bomberman.EntityManager.Entity
+public abstract class MovingEntity extends Entity implements ActionOnDisappearance
 {
 
-
-
+    protected int damage;
     protected Point directionMovement;
     protected Point constPixelMovement;
     protected Direction direction;
     protected int moveDuration;
+    protected int nbrPv;
+
 
     //just used to a create a player without parameter
-    public MovingEntity(int moveDurationMs) {
-        super();
-        this.moveDuration=moveDurationMs;
-        int pixelWidth= (int) Math.rint(((float)Map.WIDTH_TILE)/((float)moveDurationMs/(float)Game.THREAD_SLEEP));
-        int pixelHeight=(int) Math.rint(((float)Map.WIDTH_TILE)/((float)moveDurationMs/(float)Game.THREAD_SLEEP));
 
+    public MovingEntity(int moveDurationMs,int Pv,int damage,EntityType entityType) {
+        super(entityType);
+        initSpeed(moveDurationMs);
+        nbrPv=Pv;
+        this.damage=damage;
+    }
+
+    public MovingEntity(MovingEntity movingEntity,Point posInArrayMap) {
+        super(posInArrayMap,movingEntity.entityType);
+        initSpeed(movingEntity.moveDuration);
+        nbrPv=movingEntity.nbrPv;
+        this.damage=movingEntity.damage;
+    }
+
+    public void initSpeed(int moveDuration)
+    {
+        this.moveDuration=moveDuration;
+        int pixelWidth= (int) Math.rint(((float)Map.WIDTH_TILE)/((float)moveDuration/(float)Game.THREAD_SLEEP));
+        int pixelHeight=(int) Math.rint(((float)Map.WIDTH_TILE)/((float)moveDuration/(float)Game.THREAD_SLEEP));
         constPixelMovement=new Point(pixelWidth,pixelHeight);
-
     }
 
 
@@ -31,8 +45,9 @@ public abstract class MovingEntity extends Bomberman.EntityManager.Entity
     /**
      * this function solve the effect of a collision with an other entity, win the game if we enter in the exit
      * @param caseCollision the case we go inside
+    * @return true if the tile get an entity
      */
-    public final void collisionWith(Point caseCollision)
+    public final boolean collisionWith(Point caseCollision)
     {
 
         Entity entityMet= Main.game.getMap().getTile(caseCollision).getEntity();
@@ -51,7 +66,7 @@ public abstract class MovingEntity extends Bomberman.EntityManager.Entity
             //System.out.println(this.getClass().getSimpleName()+":"+entityMet.getClass().getSimpleName()+"="+isThereCollision);
         }
         //System.out.println(this.getClass().getSimpleName()+"="+isThereCollision);
-
+        return Main.game.getMap().getTile(caseCollision).hasEntity();
     }
 
     //update the coordinate in pixel of the entity after a move
@@ -91,20 +106,33 @@ public abstract class MovingEntity extends Bomberman.EntityManager.Entity
             //if it's not inside map OR it's not free
 
 
-            if( !Main.game.getMap().isInsideMap(futureTile)
-                    || !Main.game.getMap().getTile(futureTile).isFree())
+            boolean changeDirectionCollision=true;
+            if(Main.game.getMap().isInsideMap(futureTile)&&
+                    Main.game.getMap().getTile(futureTile).isWay())
             {
-                if(Main.game.getMap().isInsideMap(futureTile)&&Main.game.getMap().getTile(futureTile).hasEntity())
-                    this.collisionWith(futureTile);
+                if(Main.game.getMap().getTile(futureTile).hasEntity())
+                {
+                    changeDirectionCollision=this.collisionWith(futureTile);
+                }else
+                {
+                    changeDirectionCollision=false;
+                }
+            }
 
+            if(changeDirectionCollision)
+            {
                 changeDirection();
 
                 futureTile.setLocation(posInArrayMap);
                 futureTile.translate(directionMovement.x,directionMovement.y);
             }
 
-            Main.game.getMap().getTile(posInArrayMap).setEntity(null);
-            Main.game.getMap().getTile(futureTile).setEntity(this);
+
+            if(!posInArrayMap.equals(futureTile))
+            {
+                Main.game.getMap().getTile(posInArrayMap).setEntity(null);
+                Main.game.getMap().getTile(futureTile).setEntity(this);
+            }
 
             //we save our old position
             //oldPosInArrayMap.setLocation(posInArrayMap);
@@ -114,7 +142,24 @@ public abstract class MovingEntity extends Bomberman.EntityManager.Entity
         //he translates himself forward with his direction
         translatePixelEntity();
     }
-    
+
+    public boolean hurt(int damage)
+    {
+        nbrPv-=damage;
+        if(nbrPv<=0)
+        {
+            actionOnDisappearance();
+            return true;
+        }
+
+        return false;
+
+    }
+
+    @Override
+    public void actionOnDisappearance() {
+        Main.game.getMap().deleteFromAll(this);
+    }
 
     @Override
     public void init(Point posInArrayMap) {
@@ -123,6 +168,9 @@ public abstract class MovingEntity extends Bomberman.EntityManager.Entity
     }
 
 
+    public int getDamage() {
+        return damage;
+    }
 
     public abstract void changeDirection();
 
@@ -151,5 +199,15 @@ public abstract class MovingEntity extends Bomberman.EntityManager.Entity
         }
 
         return animation;
+    }
+
+    public void setDirection(Direction direction)
+    {
+        this.direction=direction;
+        directionMovement=direction.getDirection();
+    }
+
+    public int getNbrPv() {
+        return nbrPv;
     }
 }

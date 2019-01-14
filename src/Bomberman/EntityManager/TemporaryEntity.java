@@ -15,9 +15,8 @@ public class TemporaryEntity extends Entity implements ActionOnDisappearance{
      * @param countDown time beofre the entity disappear
      */
     public TemporaryEntity(Point posInArrayMap, int countDown,Animation animation,EntityType entityType) {
-        super(posInArrayMap);
+        super(posInArrayMap,entityType);
         this.countDown = countDown;
-        this.entityType=entityType;
         container.init(countDown, animation,entityType);
     }
 

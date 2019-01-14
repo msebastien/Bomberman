@@ -8,31 +8,32 @@ import java.util.*;
 import java.util.Map;
 
 
-public class Enemy extends MovingEntity implements ActionOnDisappearance
+public class Enemy extends MovingEntity
 {
 
     public static final List<Enemy> ListEnemy= Arrays.asList(
-            new Enemy(Game.speedEnemy,EntityType.KNIGHT,2),
-            new Enemy(Game.speedEnemy,EntityType.ENEMY,1));
+            new Enemy(Vitesse.LENT,EntityType.KNIGHT,2,2),
+            new Enemy(Vitesse.RAPIDE,EntityType.LEVIATHAN,4,1),
+            new Enemy(Vitesse.MOYEN,EntityType.EVIL,2,1),
+            new Enemy(Vitesse.MOYEN,EntityType.ENEMY,1,1));
 
-    private int nbrPv;
 
-    private Enemy(int moveDurationMs,EntityType entityType, int nbrPv) {
-        super(moveDurationMs);
-        this.entityType=entityType;
-        this.nbrPv = nbrPv;
+
+
+    protected Enemy(Vitesse vitesse,EntityType entityType,int damage, int nbrPv) {
+        super(vitesse.getDurationMs(),nbrPv,damage,entityType);
     }
 
     public Enemy(Enemy enemyCopy) {
-        super(enemyCopy.moveDuration);
-        nbrPv=enemyCopy.nbrPv;
+        super(enemyCopy.moveDuration,enemyCopy.nbrPv,enemyCopy.damage,enemyCopy.entityType);
         direction=Randomator.getRandomElementIn(Direction.directionList);
         directionMovement= direction.getDirection();
         this.entityType=enemyCopy.entityType;
-
         Animation animation=translateDirectionToAnimation();
         container.init(moveDuration,animation,entityType);
     }
+
+
 
 
     @Override
@@ -42,7 +43,8 @@ public class Enemy extends MovingEntity implements ActionOnDisappearance
         if(entity.getClass()==Player.class)
         {
             //this is the end of the game
-            Main.game.end(IssueGame.DEFEAT);
+            //Main.game.end(IssueGame.DEFEAT);
+            ((Player)entity).hurt(damage);
         }
 
     }
@@ -74,16 +76,39 @@ public class Enemy extends MovingEntity implements ActionOnDisappearance
         directionMovement=direction.getDirection();
     }
 
+    @Override
     public boolean hurt(int damage)
     {
-        nbrPv-=damage;
-        return(nbrPv<=0);
+        /*nbrPv-=damage;
+        if(nbrPv<=0)
+        {
+            Main.game.getMap().deleteFromAll(this);
+            actionOnDisappearance();
+        }*/
+
+        Main.game.getMap().addToEntityListOnly(new TemporaryEntity(
+                this.getPosInArrayMap(),
+                Animation.DURATION_ANIMATION_HURT,
+                Animation.HURT,
+                EntityType.HURT));
+
+        return super.hurt(damage);
     }
 
 
 
     @Override
     public void actionOnDisappearance() {
-        Main.game.getMap().addToMap(new ItemDropped(new Point(this.posInArrayMap)));
+        super.actionOnDisappearance();
+
+        Main.game.getMap().addToMap(itemToDrop());
     }
+
+    protected ItemDropped itemToDrop()
+    {
+        return new ItemDropped(Randomator.getRandomElementIn(ItemDropped.listItem),posInArrayMap);
+
+    }
+
+
 }
